@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gumma Public School - Admission Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="landing-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link active">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                {% if current_role == 'student' %}
+                    <a href="{{ url_for('admission_form') }}" class="nav-link">Apply</a>
+                    <a href="{{ url_for('status') }}" class="nav-link">Status</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fees</a>
+                {% elif current_role == 'admin' %}
+                    <a href="{{ url_for('students') }}" class="nav-link">Applications</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fee Logs</a>
+                {% endif %}
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            {% if current_username %}
+                <div class="user-profile">
+                    <div class="avatar">{{ current_username[0]|upper }}</div>
+                    <span class="username">{{ current_username }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-header">Sign In</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-header">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Hero -->
+    <section class="landing-hero">
+        <div class="hero-bg-overlay"></div>
+        <div class="landing-hero-content">
+            <h1 class="hero-title">Shaping Leaders of <span class="highlight">Tomorrow</span></h1>
+            <p class="hero-subtitle">Welcome to Gumma Public School Admission Portal. Empowering children through world-class education, values, and holistic development. Admissions for 2026-27 are now open.</p>
+            
+            <div class="hero-actions">
+                {% if current_username %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary">Admission Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Info Cards -->
+    <section class="landing-features">
+        <div class="section-header">
+            <h2>Why Gumma Public School?</h2>
+            <p>We nurture minds to achieve academic excellence and strong moral values.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon font-blue">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <h3>Expert Faculty</h3>
+                <p>Learn from certified, passionate educators with decades of training experience.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon font-green">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <h3>Global Curriculum</h3>
+                <p>A rigorous, comprehensive syllabus designed to compete in international settings.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon font-orange">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <h3>Holistic Growth</h3>
+                <p>Extra-curricular activities including swimming, art, music, chess, and robotics clubs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Process -->
+    <section class="admission-process">
+        <div class="section-header">
+            <h2>The Admission Journey</h2>
+            <p>Four simple steps to register and finalize enrollment.</p>
+        </div>
+        
+        <div class="process-timeline">
+            <div class="timeline-step">
+                <div class="step-num">1</div>
+                <h4>Create Account</h4>
+                <p>Register online to get your portal login credentials.</p>
+            </div>
+            
+            <div class="timeline-step">
+                <div class="step-num">2</div>
+                <h4>Apply & Upload</h4>
+                <p>Complete the admission form and upload transfer certificate & photos.</p>
+            </div>
+            
+            <div class="timeline-step">
+                <div class="step-num">3</div>
+                <h4>Document Verification</h4>
+                <p>Our admissions board reviews your application credentials.</p>
+            </div>
+            
+            <div class="timeline-step">
+                <div class="step-num">4</div>
+                <h4>Secure Seat</h4>
+                <p>Complete the online registration fee payment to finalize.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Typical Verification Steps -->
+    <section class="verification-steps-section">
+        <div class="section-header">
+            <h2>Typical Verification Steps</h2>
+            <p>A parent-friendly guide to completing school admission or annual student verification.</p>
+        </div>
+
+        <div class="vsteps-container">
+
+            <!-- Step 1 -->
+            <div class="vstep-card">
+                <div class="vstep-header">
+                    <div class="vstep-num">1</div>
+                    <h3 class="vstep-title">Portal Login</h3>
+                </div>
+                <p class="vstep-desc">Parents should access the school's online <strong>Parent Portal</strong> or <strong>Admissions Dashboard</strong> using their registered credentials.</p>
+                <a href="{{ url_for('login') }}" class="vstep-link">Go to Login &rarr;</a>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="vstep-card">
+                <div class="vstep-header">
+                    <div class="vstep-num">2</div>
+                    <h3 class="vstep-title">Select Student Profile</h3>
+                </div>
+                <p class="vstep-desc">Navigate to the specific <strong>student profile</strong> or <strong>annual verification tab</strong>, depending on whether the student is a new applicant or a returning student completing yearly updates.</p>
+                <a href="{{ url_for('dashboard') }}" class="vstep-link">Open Dashboard &rarr;</a>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="vstep-card">
+                <div class="vstep-header">
+                    <div class="vstep-num">3</div>
+                    <h3 class="vstep-title">Review and Update Information</h3>
+                </div>
+                <p class="vstep-desc">Review each required category — including <strong>emergency contacts</strong>, <strong>personal details</strong>, and <strong>medical history</strong> — and confirm or revise the information as needed.</p>
+                <a href="{{ url_for('admission_form') }}" class="vstep-link">Update Form &rarr;</a>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="vstep-card">
+                <div class="vstep-header">
+                    <div class="vstep-num">4</div>
+                    <h3 class="vstep-title">Document Upload</h3>
+                </div>
+                <p class="vstep-desc">Upload the required digital documents through the admission form:</p>
+                <ul class="vstep-doclist">
+                    <li>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Birth certificate or proof of age
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Proof of residence or address
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Previous academic transcripts or report cards
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Immunization and health records
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Passport-sized photographs
+                    </li>
+                </ul>
+                <a href="{{ url_for('admission_form') }}" class="vstep-link">Upload Documents &rarr;</a>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="vstep-card vstep-card--last">
+                <div class="vstep-header">
+                    <div class="vstep-num vstep-num--final">5</div>
+                    <h3 class="vstep-title">Submit and Track Status</h3>
+                </div>
+                <p class="vstep-desc">Complete the <strong>electronic sign-off</strong> and monitor the portal dashboard until the application or verification status changes from <span class="status-tag status-tag--submitted">Submitted</span> to <span class="status-tag status-tag--progress">Under Verification</span> or <span class="status-tag status-tag--verified">Verified</span>.</p>
+                <a href="{{ url_for('status') }}" class="vstep-link">Track My Status &rarr;</a>
+            </div>
+
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <p>&copy; 2026 Gumma Public School. All Rights Reserved. | <a href="{{ url_for('contact') }}">Help & Support</a></p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

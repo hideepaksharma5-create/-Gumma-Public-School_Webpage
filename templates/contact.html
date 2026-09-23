@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link active">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                {% if current_role == 'student' %}
+                    <a href="{{ url_for('admission_form') }}" class="nav-link">Apply</a>
+                    <a href="{{ url_for('status') }}" class="nav-link">Status</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fees</a>
+                {% elif current_role == 'admin' %}
+                    <a href="{{ url_for('students') }}" class="nav-link">Applications</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fee Logs</a>
+                {% endif %}
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            {% if current_username %}
+                <div class="user-profile">
+                    <div class="avatar">{{ current_username[0]|upper }}</div>
+                    <span class="username">{{ current_username }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-header">Sign In</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-header">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="dash-container">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="contact-grid">
+            <!-- Left Panel: Contacts Detail -->
+            <div class="card contact-details-card">
+                <div class="card-header">
+                    <h2>Admission Office</h2>
+                </div>
+                <div class="card-body-padding">
+                    <div class="contact-methods">
+                        <div class="method-item">
+                            <div class="item-icon font-blue">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <h4>School Location</h4>
+                                <p>Sector-4, Admission Division, Shimla, HP, India</p>
+                            </div>
+                        </div>
+
+                        <div class="method-item">
+                            <div class="item-icon font-green">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </div>
+                            <div>
+                                <h4>Email Enquiries</h4>
+                                <p><a href="mailto:admissions@gummapublicschool.edu">admissions@gummapublicschool.edu</a></p>
+                            </div>
+                        </div>
+
+                        <div class="method-item">
+                            <div class="item-icon font-orange">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            </div>
+                            <div>
+                                <h4>Admissions Helpline</h4>
+                                <p>+91 (177) 283-9483 | +91 (177) 283-9484</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Widget Mockup -->
+                    <div class="map-mockup-wrapper">
+                        <div class="map-placeholder">
+                            <div class="map-marker-pin"></div>
+                            <span>Interactive Map Mockup</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Message Submission Form -->
+            <div class="card contact-form-card">
+                <div class="card-header">
+                    <h2>Send a Message</h2>
+                </div>
+                <div class="card-body-padding">
+                    {% if message %}
+                    <div class="alert alert-error">
+                        <span>{{ message }}</span>
+                    </div>
+                    {% endif %}
+
+                    <form action="{{ url_for('contact') }}" method="POST" class="auth-form">
+                        <div class="input-group">
+                            <label for="name">Your Name <span class="required">*</span></label>
+                            <input type="text" id="name" name="name" required placeholder="Enter full name">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="name@example.com">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="General, admission support, technical issue...">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="message">Message / Enquiry <span class="required">*</span></label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Type your query here..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <span>Send Query</span>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

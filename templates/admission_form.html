@@ -1,0 +1,769 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Form - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('admission_form') }}" class="nav-link active">Apply</a>
+                <a href="{{ url_for('status') }}" class="nav-link">Status</a>
+                <a href="{{ url_for('fees') }}" class="nav-link">Fees</a>
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">{{ current_username[0]|upper }}</div>
+                <span class="username">{{ current_username }}</span>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card max-w-form">
+            <div class="card-header">
+                <h2>Student Admission Application</h2>
+                <span class="status-indicator">Academic Session 2026-2027</span>
+            </div>
+            
+            <div class="card-body">
+                {% if message %}
+                <div class="alert alert-error">
+                    <span>{{ message }}</span>
+                </div>
+                {% endif %}
+
+                <form action="{{ url_for('admission_form') }}" method="POST" enctype="multipart/form-data" class="admission-form">
+                    
+                    <!-- Section 1: Student Info -->
+                    <div class="form-section-group">
+                        <h3 class="form-section-title">1. Student Personal Details</h3>
+                        <div class="form-grid-2">
+                            <div class="input-group">
+                                <label for="student_name">Full Name of Student <span class="required">*</span></label>
+                                <input type="text" id="student_name" name="student_name" value="{{ application.student_name if application else '' }}" required placeholder="First and last name">
+                            </div>
+                            <div class="form-grid-2-inner">
+                                <div class="input-group">
+                                    <label for="dob">Date of Birth <span class="required">*</span></label>
+                                    <input type="date" id="dob" name="dob" value="{{ application.dob if application else '' }}" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="gender">Gender <span class="required">*</span></label>
+                                    <select id="gender" name="gender" required>
+                                        <option value="" disabled {{ 'selected' if not application else '' }}>Select</option>
+                                        <option value="Male" {{ 'selected' if application and application.gender == 'Male' else '' }}>Male</option>
+                                        <option value="Female" {{ 'selected' if application and application.gender == 'Female' else '' }}>Female</option>
+                                        <option value="Other" {{ 'selected' if application and application.gender == 'Other' else '' }}>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Parent Info -->
+                    <div class="form-section-group">
+                        <h3 class="form-section-title">2. Parent / Guardian Details</h3>
+                        <div class="form-grid-2">
+                            <div class="input-group">
+                                <label for="parent_name">Parent/Guardian Name <span class="required">*</span></label>
+                                <input type="text" id="parent_name" name="parent_name" value="{{ application.parent_name if application else '' }}" required placeholder="Full name of parent">
+                            </div>
+                            <div class="input-group">
+                                <label for="parent_email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="parent_email" name="parent_email" value="{{ application.parent_email if application else '' }}" required placeholder="email@example.com">
+                            </div>
+                            <div class="input-group">
+                                <label for="parent_phone">Mobile Number <span class="required">*</span></label>
+                                <input type="tel" id="parent_phone" name="parent_phone" value="{{ application.parent_phone if application else '' }}" required placeholder="10-digit mobile number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Academic Details -->
+                    <div class="form-section-group">
+                        <h3 class="form-section-title">3. Academic Admission Details</h3>
+                        <div class="form-grid-2">
+                            <!-- Grade Picker: Section accordion -->
+                            <div class="input-group grade-picker-group" style="grid-column: 1 / -1;">
+                                <label>Applying for Class / Grade <span class="required">*</span></label>
+                                <!-- Hidden real input submitted with form -->
+                                {% set curr_g = application.grade_applying if application else '' %}
+                                <input type="hidden" id="grade_applying" name="grade_applying"
+                                       value="{{ curr_g.split(' - ')[0] if curr_g else '' }}" required>
+
+                                <!-- Display: currently selected -->
+                                <div class="grade-selected-display" id="gradeSelectedDisplay">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                                    <span id="gradeSelectedText">
+                                        {% if curr_g %}{{ curr_g.split(' - ')[0] }}{% else %}Click a section below to choose a class{% endif %}
+                                    </span>
+                                </div>
+
+                                <!-- Section Accordion -->
+                                <div class="grade-section-accordion">
+
+                                    <!-- PRIMARY -->
+                                    <div class="grade-section-block" id="sec-primary">
+                                        <button type="button" class="grade-section-header" onclick="toggleSection('primary')">
+                                            <div class="grade-section-left">
+                                                <span class="grade-section-dot dot-blue"></span>
+                                                <span class="grade-section-name">🏫 Primary Section</span>
+                                                <span class="grade-section-range">Nursery – Class 5</span>
+                                            </div>
+                                            <svg class="grade-chevron" id="chevron-primary" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </button>
+                                        <div class="grade-class-panel" id="panel-primary">
+                                            <div class="grade-class-grid">
+                                                {% for cls in [('Nursery', 'N'), ('Class KG', 'KG'), ('Class 1', '1'), ('Class 2', '2'), ('Class 3', '3'), ('Class 4', '4'), ('Class 5', '5')] %}
+                                                <button type="button"
+                                                    class="grade-class-btn {% if curr_g and cls[0] in curr_g %}active{% endif %}"
+                                                    onclick="selectGrade('{{ cls[0] }}', 'primary', this)">
+                                                    <span class="grade-num">{{ cls[1] }}</span>
+                                                    <span class="grade-label">{{ cls[0] }}</span>
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- MIDDLE -->
+                                    <div class="grade-section-block" id="sec-middle">
+                                        <button type="button" class="grade-section-header" onclick="toggleSection('middle')">
+                                            <div class="grade-section-left">
+                                                <span class="grade-section-dot dot-green"></span>
+                                                <span class="grade-section-name">📖 Middle Section</span>
+                                                <span class="grade-section-range">Class 6 – 8</span>
+                                            </div>
+                                            <svg class="grade-chevron" id="chevron-middle" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </button>
+                                        <div class="grade-class-panel" id="panel-middle">
+                                            <div class="grade-class-grid">
+                                                {% for cls in [('Class 6', '6'), ('Class 7', '7'), ('Class 8', '8')] %}
+                                                <button type="button"
+                                                    class="grade-class-btn {% if curr_g and cls[0] in curr_g %}active{% endif %}"
+                                                    onclick="selectGrade('{{ cls[0] }}', 'middle', this)">
+                                                    <span class="grade-num">{{ cls[1] }}</span>
+                                                    <span class="grade-label">{{ cls[0] }}</span>
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SECONDARY -->
+                                    <div class="grade-section-block" id="sec-secondary">
+                                        <button type="button" class="grade-section-header" onclick="toggleSection('secondary')">
+                                            <div class="grade-section-left">
+                                                <span class="grade-section-dot dot-orange"></span>
+                                                <span class="grade-section-name">🎓 Secondary Section</span>
+                                                <span class="grade-section-range">Class 9 – 10</span>
+                                            </div>
+                                            <svg class="grade-chevron" id="chevron-secondary" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </button>
+                                        <div class="grade-class-panel" id="panel-secondary">
+                                            <div class="grade-class-grid">
+                                                {% for cls in [('Class 9', '9'), ('Class 10', '10')] %}
+                                                <button type="button"
+                                                    class="grade-class-btn {% if curr_g and cls[0] in curr_g %}active{% endif %}"
+                                                    onclick="selectGrade('{{ cls[0] }}', 'secondary', this)">
+                                                    <span class="grade-num">{{ cls[1] }}</span>
+                                                    <span class="grade-label">{{ cls[0] }}</span>
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SENIOR SECONDARY -->
+                                    <div class="grade-section-block" id="sec-senior">
+                                        <button type="button" class="grade-section-header" onclick="toggleSection('senior')">
+                                            <div class="grade-section-left">
+                                                <span class="grade-section-dot dot-purple"></span>
+                                                <span class="grade-section-name">🏅 Senior Secondary</span>
+                                                <span class="grade-section-range">Class 11 – 12</span>
+                                            </div>
+                                            <svg class="grade-chevron" id="chevron-senior" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </button>
+                                        <div class="grade-class-panel" id="panel-senior">
+                                            <div class="grade-class-grid">
+                                                {% for cls in [('Class 11', '11'), ('Class 12', '12')] %}
+                                                <button type="button"
+                                                    class="grade-class-btn {% if curr_g and cls[0] in curr_g %}active{% endif %}"
+                                                    onclick="selectGrade('{{ cls[0] }}', 'senior', this)">
+                                                    <span class="grade-num">{{ cls[1] }}</span>
+                                                    <span class="grade-label">{{ cls[0] }}<br><small>Senior Secondary</small></span>
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.grade-section-accordion -->
+                            </div><!-- /.grade-picker-group -->
+                            <div class="input-group">
+                                <label for="previous_school">Previous School Attended</label>
+                                <input type="text" id="previous_school" name="previous_school" value="{{ application.previous_school if application else '' }}" placeholder="Name of last school attended">
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Senior Secondary Stream & Subject Specialization -->
+                        <div id="senior_secondary_section" class="senior-secondary-box" style="display: none;">
+                            <div class="stream-header-badge">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                                <span>Senior Secondary Stream Specialization (HPBOSE Curriculum)</span>
+                            </div>
+
+                            <label class="stream-picker-title" style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main);">
+                                Select Senior Secondary Stream <span class="required">*</span>
+                            </label>
+                            
+                            <div class="stream-cards-grid">
+                                <label class="stream-card-label">
+                                    <input type="radio" name="stream" value="Arts" {{ 'checked' if current_stream == 'Arts' or not current_stream else '' }}>
+                                    <div class="stream-card-content">
+                                        <div class="stream-card-icon">ðŸŽ¨</div>
+                                        <div class="stream-card-title">Arts (Humanities)</div>
+                                        <div class="stream-card-desc">History, Pol Science, Geography, Economics, Psychology & more</div>
+                                    </div>
+                                </label>
+
+                                <label class="stream-card-label">
+                                    <input type="radio" name="stream" value="Commerce" {{ 'checked' if current_stream == 'Commerce' else '' }}>
+                                    <div class="stream-card-content">
+                                        <div class="stream-card-icon">ðŸ“Š</div>
+                                        <div class="stream-card-title">Commerce</div>
+                                        <div class="stream-card-desc">Accountancy, Business Studies, Economics, Mathematics</div>
+                                    </div>
+                                </label>
+
+                                <label class="stream-card-label">
+                                    <input type="radio" name="stream" value="Science (Medical)" {{ 'checked' if current_stream == 'Science (Medical)' else '' }}>
+                                    <div class="stream-card-content">
+                                        <div class="stream-card-icon">ðŸ§ª</div>
+                                        <div class="stream-card-title">Science (Medical)</div>
+                                        <div class="stream-card-desc">Physics, Chemistry, Biology + Elective Options</div>
+                                    </div>
+                                </label>
+
+                                <label class="stream-card-label">
+                                    <input type="radio" name="stream" value="Science (Non-Medical)" {{ 'checked' if current_stream == 'Science (Non-Medical)' else '' }}>
+                                    <div class="stream-card-content">
+                                        <div class="stream-card-icon">ðŸ”¬</div>
+                                        <div class="stream-card-title">Science (Non-Medical)</div>
+                                        <div class="stream-card-desc">Physics, Chemistry, Mathematics + Elective Options</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Stream: Arts Subjects -->
+                            <div id="stream_arts_panel" class="stream-subjects-section">
+                                <div class="subjects-section-header">
+                                    <div class="subjects-section-title">
+                                        ðŸŽ¨ Arts Stream Subjects (HP Board Syllabus)
+                                    </div>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <span class="hpbose-badge">âœ“ HPBOSE Board</span>
+                                        <span id="arts_selected_count" class="subject-count-badge">0 selected</span>
+                                    </div>
+                                </div>
+                                <p class="subjects-subtext">Choose your elective subjects (recommended: 3 to 5 subjects). Compulsory English is included automatically:</p>
+                                
+                                <div class="subjects-checkbox-grid">
+                                    {% set arts_subjects = [
+                                        "History",
+                                        "Political Science",
+                                        "Geography",
+                                        "Sociology",
+                                        "Psychology",
+                                        "Public Administration",
+                                        "Economics",
+                                        "Sanskrit (Elective)",
+                                        "Urdu",
+                                        "Music (Vocal/Instrumental)",
+                                        "Fine Arts (Painting/Graphics/Sculpture)",
+                                        "Physical Education / Yoga",
+                                        "Human Ecology and Family Science (Home Science)",
+                                        "Computer Science / Mathematics"
+                                    ] %}
+                                    {% for subj in arts_subjects %}
+                                    <label class="subject-checkbox-item {{ 'checked' if subj in current_subjects else '' }}">
+                                        <input type="checkbox" name="subjects" value="{{ subj }}" {{ 'checked' if subj in current_subjects else '' }} class="arts-checkbox">
+                                        <span>{{ subj }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Stream: Commerce Subjects -->
+                            <div id="stream_commerce_panel" class="stream-subjects-section" style="display: none;">
+                                <div class="subjects-section-header">
+                                    <div class="subjects-section-title">ðŸ“Š Commerce Stream Subjects</div>
+                                    <span class="hpbose-badge">âœ“ HPBOSE Board</span>
+                                </div>
+                                <div class="core-subjects-banner">
+                                    <span class="core-subjects-label">Core Compulsory:</span>
+                                    <span class="core-subject-pill">Accountancy</span>
+                                    <span class="core-subject-pill">Business Studies</span>
+                                    <span class="core-subject-pill">Economics</span>
+                                    <span class="core-subject-pill">English</span>
+                                </div>
+                                <p class="subjects-subtext">Select optional / elective subject:</p>
+                                <div class="subjects-checkbox-grid">
+                                    {% set comm_subjects = [
+                                        "Mathematics",
+                                        "Computer Science / Informatics Practices",
+                                        "Physical Education / Yoga"
+                                    ] %}
+                                    {% for subj in comm_subjects %}
+                                    <label class="subject-checkbox-item {{ 'checked' if subj in current_subjects else '' }}">
+                                        <input type="checkbox" name="subjects" value="{{ subj }}" {{ 'checked' if subj in current_subjects else '' }}>
+                                        <span>{{ subj }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Stream: Science Medical Subjects -->
+                            <div id="stream_medical_panel" class="stream-subjects-section" style="display: none;">
+                                <div class="subjects-section-header">
+                                    <div class="subjects-section-title">ðŸ§ª Science (Medical) Subjects</div>
+                                    <span class="hpbose-badge">âœ“ HPBOSE Board</span>
+                                </div>
+                                <div class="core-subjects-banner">
+                                    <span class="core-subjects-label">Core Compulsory:</span>
+                                    <span class="core-subject-pill">Physics</span>
+                                    <span class="core-subject-pill">Chemistry</span>
+                                    <span class="core-subject-pill">Biology</span>
+                                    <span class="core-subject-pill">English</span>
+                                </div>
+                                <p class="subjects-subtext">Select 5th / optional elective subject:</p>
+                                <div class="subjects-checkbox-grid">
+                                    {% set med_subjects = [
+                                        "Mathematics",
+                                        "Physical Education / Yoga",
+                                        "Computer Science",
+                                        "Psychology",
+                                        "Fine Arts (Painting/Graphics/Sculpture)"
+                                    ] %}
+                                    {% for subj in med_subjects %}
+                                    <label class="subject-checkbox-item {{ 'checked' if subj in current_subjects else '' }}">
+                                        <input type="checkbox" name="subjects" value="{{ subj }}" {{ 'checked' if subj in current_subjects else '' }}>
+                                        <span>{{ subj }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Stream: Science Non-Medical Subjects -->
+                            <div id="stream_nonmedical_panel" class="stream-subjects-section" style="display: none;">
+                                <div class="subjects-section-header">
+                                    <div class="subjects-section-title">ðŸ”¬ Science (Non-Medical) Subjects</div>
+                                    <span class="hpbose-badge">âœ“ HPBOSE Board</span>
+                                </div>
+                                <div class="core-subjects-banner">
+                                    <span class="core-subjects-label">Core Compulsory:</span>
+                                    <span class="core-subject-pill">Physics</span>
+                                    <span class="core-subject-pill">Chemistry</span>
+                                    <span class="core-subject-pill">Mathematics</span>
+                                    <span class="core-subject-pill">English</span>
+                                </div>
+                                <p class="subjects-subtext">Select 5th / optional elective subject:</p>
+                                <div class="subjects-checkbox-grid">
+                                    {% set nonmed_subjects = [
+                                        "Computer Science",
+                                        "Physical Education / Yoga",
+                                        "Economics",
+                                        "Fine Arts (Painting/Graphics/Sculpture)"
+                                    ] %}
+                                    {% for subj in nonmed_subjects %}
+                                    <label class="subject-checkbox-item {{ 'checked' if subj in current_subjects else '' }}">
+                                        <input type="checkbox" name="subjects" value="{{ subj }}" {{ 'checked' if subj in current_subjects else '' }}>
+                                        <span>{{ subj }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Document Uploads -->
+                    <div class="form-section-group">
+                        <h3 class="form-section-title">4. Document Uploads <span class="doc-format-hint">(PDF / JPG / PNG — max 16 MB each)</span></h3>
+
+                        <div class="doc-upload-grid">
+
+                            <!-- Transfer Certificate -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="tc_file">Transfer Certificate (TC) <span class="doc-required">*</span></label>
+                                    <p class="doc-upload-hint">Original TC from your previous school</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.tc_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.tc_filename) }}" target="_blank" class="doc-filename">{{ application.tc_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('tc_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="tc_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="tc_file" name="tc_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <!-- Passport Size Photo -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="photo_file">Passport Size Photograph <span class="doc-required">*</span></label>
+                                    <p class="doc-upload-hint">Recent passport-sized photo (white background)</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.photo_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.photo_filename) }}" target="_blank" class="doc-filename">{{ application.photo_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('photo_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="photo_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="photo_file" name="photo_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <!-- Birth Certificate -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="birth_cert_file">Birth Certificate / Proof of Age</label>
+                                    <p class="doc-upload-hint">Official birth certificate or age proof document</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.birth_cert_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.birth_cert_filename) }}" target="_blank" class="doc-filename">{{ application.birth_cert_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('birth_cert_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="birth_cert_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="birth_cert_file" name="birth_cert_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <!-- Proof of Residence -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="residence_file">Proof of Residence / Address</label>
+                                    <p class="doc-upload-hint">Aadhaar card, electricity bill, or rent agreement</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.residence_proof_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.residence_proof_filename) }}" target="_blank" class="doc-filename">{{ application.residence_proof_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('residence_proof_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="residence_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="residence_file" name="residence_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <!-- Previous Marksheet -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="marksheet_file">Previous Academic Marksheet / Report Card</label>
+                                    <p class="doc-upload-hint">Last year's final examination report card</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.marksheet_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.marksheet_filename) }}" target="_blank" class="doc-filename">{{ application.marksheet_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('marksheet_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="marksheet_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="marksheet_file" name="marksheet_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <!-- Health / Immunization Records -->
+                            <div class="doc-upload-card">
+                                <div class="doc-upload-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </div>
+                                <div class="doc-upload-info">
+                                    <label class="doc-upload-label" for="health_file">Immunization &amp; Health Records</label>
+                                    <p class="doc-upload-hint">Vaccination certificates and medical fitness records</p>
+                                </div>
+                                <div class="doc-upload-controls">
+                                    {% if application and application.health_records_filename %}
+                                    <div class="doc-uploaded-row">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <a href="{{ url_for('static', filename='uploads/' + application.health_records_filename) }}" target="_blank" class="doc-filename">{{ application.health_records_filename }}</a>
+                                        <button type="button" class="doc-delete-btn" title="Remove document" onclick="deleteDocument('health_records_filename', this)">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <label class="doc-replace-label" for="health_file">Replace file:</label>
+                                    {% endif %}
+                                    <input type="file" id="health_file" name="health_file" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                        </div><!-- /.doc-upload-grid -->
+                    </div>
+
+                    <div class="form-actions-submit">
+                        <button type="submit" class="btn btn-primary btn-submit-large">
+                            <span>Submit Admission Application</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // ── Grade Accordion Logic ──────────────────────────────
+        const SECTIONS = ['primary', 'middle', 'secondary', 'senior'];
+
+        // updateGradeView must be global so selectGrade() can call it
+        function updateGradeView() {
+            const val = document.getElementById('grade_applying').value;
+            const isSenior = (val === 'Class 11' || val === 'Class 12');
+            const seniorSecSection = document.getElementById('senior_secondary_section');
+            if (seniorSecSection) {
+                seniorSecSection.style.display = isSenior ? 'block' : 'none';
+            }
+            if (isSenior) {
+                updateStreamPanels();
+            }
+        }
+
+        function updateStreamPanels() {
+            const panelIds = {
+                'Arts': 'stream_arts_panel',
+                'Commerce': 'stream_commerce_panel',
+                'Science (Medical)': 'stream_medical_panel',
+                'Science (Non-Medical)': 'stream_nonmedical_panel'
+            };
+            const checkedRadio = document.querySelector('input[name="stream"]:checked');
+            const selectedStream = checkedRadio ? checkedRadio.value : 'Arts';
+            Object.entries(panelIds).forEach(([key, id]) => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = (key === selectedStream) ? 'block' : 'none';
+            });
+        }
+
+        function toggleSection(name) {
+            SECTIONS.forEach(s => {
+                const panel   = document.getElementById('panel-'   + s);
+                const chevron = document.getElementById('chevron-' + s);
+                const block   = document.getElementById('sec-'     + s);
+                if (!panel) return;
+                if (s === name) {
+                    const isOpen = panel.classList.contains('open');
+                    panel.classList.toggle('open', !isOpen);
+                    chevron.classList.toggle('rotated', !isOpen);
+                    block.classList.toggle('active-section', !isOpen);
+                } else {
+                    panel.classList.remove('open');
+                    chevron.classList.remove('rotated');
+                    block.classList.remove('active-section');
+                }
+            });
+        }
+
+        function selectGrade(value, section, btn) {
+            // Update hidden input
+            document.getElementById('grade_applying').value = value;
+            // Update display bar
+            const display = document.getElementById('gradeSelectedText');
+            if (display) display.textContent = value;
+            const dispBar = document.getElementById('gradeSelectedDisplay');
+            if (dispBar) dispBar.classList.add('has-value');
+            // Highlight chosen button
+            document.querySelectorAll('.grade-class-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            // Show/hide Senior Secondary stream section
+            updateGradeView();
+        }
+
+        // Auto-open section matching saved grade on page load
+        function autoOpenSavedSection() {
+            const val = document.getElementById('grade_applying').value;
+            if (!val) return;
+            if (['Nursery','Class KG','Class 1','Class 2','Class 3','Class 4','Class 5'].includes(val)) {
+                toggleSection('primary');
+            } else if (['Class 6','Class 7','Class 8'].includes(val)) {
+                toggleSection('middle');
+            } else if (['Class 9','Class 10'].includes(val)) {
+                toggleSection('secondary');
+            } else if (['Class 11','Class 12'].includes(val)) {
+                toggleSection('senior');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const streamRadios = document.querySelectorAll('input[name="stream"]');
+            const countBadge   = document.getElementById('arts_selected_count');
+
+            function updateArtsCount() {
+                if (!countBadge) return;
+                const n = document.querySelectorAll('.arts-checkbox:checked').length;
+                countBadge.textContent = `${n} selected`;
+            }
+
+            // Wire stream radio buttons
+            streamRadios.forEach(radio => {
+                radio.addEventListener('change', updateStreamPanels);
+            });
+
+            // Toggle active styling on subject checkboxes
+            document.querySelectorAll('.subject-checkbox-item input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    const parent = e.target.closest('.subject-checkbox-item');
+                    if (parent) parent.classList.toggle('checked', e.target.checked);
+                    updateArtsCount();
+                });
+            });
+
+            // Initial state
+            updateGradeView();
+            updateArtsCount();
+            autoOpenSavedSection();
+        });
+    </script>
+
+    <script>
+        function deleteDocument(field, btn) {
+            if (!confirm('Are you sure you want to delete this document? This cannot be undone.')) return;
+
+            // Capture DOM elements BEFORE mutation
+            const container = btn.closest('.doc-upload-controls');
+            const uploadedRow = btn.closest('.doc-uploaded-row');
+            const replaceLabel = uploadedRow ? uploadedRow.nextElementSibling : null;
+
+            btn.disabled = true;
+            btn.textContent = 'Deleting...';
+
+            const formData = new FormData();
+            formData.append('field', field);
+
+            fetch('/delete_document', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(res => {
+                if (res.ok || res.redirected) {
+                    if (uploadedRow) uploadedRow.remove();
+                    if (replaceLabel && replaceLabel.classList.contains('doc-replace-label')) {
+                        replaceLabel.remove();
+                    }
+                    if (container) {
+                        const notice = document.createElement('div');
+                        notice.textContent = '✓ Document deleted successfully.';
+                        notice.style.cssText = 'color:#10b981;font-size:0.85rem;font-weight:600;margin:6px 0;padding:4px 8px;background:rgba(16,185,129,0.1);border-radius:6px;border:1px solid rgba(16,185,129,0.25);';
+                        container.prepend(notice);
+                        setTimeout(() => notice.remove(), 4000);
+                    }
+                } else {
+                    alert('Delete failed. Please try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg> Delete';
+                }
+            })
+            .catch(() => {
+                alert('Network error. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg> Delete';
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
