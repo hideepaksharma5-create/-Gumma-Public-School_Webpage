@@ -1,0 +1,3 @@
+Database already initialised
+ * Serving Flask app 'app'
+ * Debug mode: on
