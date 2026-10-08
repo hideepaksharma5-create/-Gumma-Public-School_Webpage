@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('students') }}" class="nav-link active">Applications</a>
+                <a href="{{ url_for('fees') }}" class="nav-link">Fee Logs</a>
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">{{ current_username[0]|upper }}</div>
+                <span class="username">{{ current_username }}</span>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Manage Student Applications</h2>
+                <div class="card-actions">
+                    <input type="text" id="tableSearch" placeholder="Search by name, grade, or status..." class="search-input">
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student Details</th>
+                            <th>Parent Details</th>
+                            <th>Uploaded Files</th>
+                            <th>Fee Status</th>
+                            <th>Verification Status</th>
+                            <th>Status Control & Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if students %}
+                            {% for student in students %}
+                            <tr>
+                                <td>#{{ student.id }}</td>
+                                <td>
+                                    <div class="student-info-cell">
+                                        <strong>{{ student.student_name }}</strong>
+                                        <span>DOB: {{ student.dob }} | {{ student.gender }}</span>
+                                        <span class="grade-label">{{ student.grade_applying }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="parent-info-cell">
+                                        <strong>{{ student.parent_name }}</strong>
+                                        <span>📞 {{ student.parent_phone }}</span>
+                                        <span>📧 {{ student.parent_email }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="docs-cell">
+                                        {% if student.tc_filename %}
+                                            <a href="{{ url_for('static', filename='uploads/' + student.tc_filename) }}" target="_blank" class="doc-link">📄 TC Document</a>
+                                        {% else %}
+                                            <span class="text-muted">No TC</span>
+                                        {% endif %}
+                                        
+                                        {% if student.photo_filename %}
+                                            <a href="{{ url_for('static', filename='uploads/' + student.photo_filename) }}" target="_blank" class="doc-link">🖼️ Photo</a>
+                                        {% else %}
+                                            <span class="text-muted">No Photo</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if student.fee_status == 'Paid' %}
+                                        <span class="badge badge-success">Paid</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">Unpaid</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if student.status == 'Approved' %}
+                                        <span class="badge badge-success">Approved</span>
+                                    {% elif student.status == 'Pending Review' %}
+                                        <span class="badge badge-warning">Pending Review</span>
+                                    {% elif student.status == 'Action Required' %}
+                                        <span class="badge badge-danger">Action Required</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">{{ student.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('students') }}" method="POST" class="inline-status-form">
+                                        <input type="hidden" name="application_id" value="{{ student.id }}">
+                                        <div class="form-row-compact">
+                                            <select name="status" required class="select-compact">
+                                                <option value="Pending Review" {{ 'selected' if student.status == 'Pending Review' else '' }}>Pending Review</option>
+                                                <option value="Verifying Documents" {{ 'selected' if student.status == 'Verifying Documents' else '' }}>Verifying Documents</option>
+                                                <option value="Approved" {{ 'selected' if student.status == 'Approved' else '' }}>Approved</option>
+                                                <option value="Action Required" {{ 'selected' if student.status == 'Action Required' else '' }}>Action Required</option>
+                                                <option value="Rejected" {{ 'selected' if student.status == 'Rejected' else '' }}>Rejected</option>
+                                            </select>
+                                            <input type="text" name="comments" value="{{ student.comments or '' }}" placeholder="Add audit comments..." class="comment-input-compact">
+                                            <button type="submit" class="btn btn-primary btn-compact">Save</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">No applications submitted yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

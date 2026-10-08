@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Center - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                {% if current_role == 'student' %}
+                    <a href="{{ url_for('admission_form') }}" class="nav-link">Apply</a>
+                    <a href="{{ url_for('status') }}" class="nav-link">Status</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link active">Fees</a>
+                {% elif current_role == 'admin' %}
+                    <a href="{{ url_for('students') }}" class="nav-link">Applications</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link active">Fee Logs</a>
+                {% endif %}
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">{{ current_username[0]|upper }}</div>
+                <span class="username">{{ current_username }}</span>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if current_role == 'admin' %}
+        <!-- ========================================== -->
+        <!-- ADMIN FEE TRANSACTION LOGS                 -->
+        <!-- ========================================== -->
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Fee Collection Transactions</h2>
+                <div class="card-actions">
+                    <input type="text" id="tableSearch" placeholder="Search logs..." class="search-input">
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Student ID / Name</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if fees %}
+                            {% for f in fees %}
+                            <tr>
+                                <td><code>{{ f.transaction_id or 'N/A' }}</code></td>
+                                <td>
+                                    <strong>{{ f.username }}</strong> 
+                                    {% if f.student_name %}
+                                        <span class="sub-text-block">({{ f.student_name }})</span>
+                                    {% endif %}
+                                </td>
+                                <td>₹{{ f.amount }}</td>
+                                <td>
+                                    {% if f.status == 'Paid' %}
+                                        <span class="badge badge-success">Paid</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">Unpaid</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ f.payment_date or 'N/A' }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No fee transaction history records found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- ========================================== -->
+        <!-- STUDENT FEE STATEMENT / BILLING PANEL      -->
+        <!-- ========================================== -->
+        
+        <div class="fee-portal-layout">
+            <div class="card invoice-card">
+                <div class="card-header">
+                    <h2>Admission Fee Invoice</h2>
+                    <span class="invoice-number">INV-2026-{{ fee.id }}</span>
+                </div>
+                
+                <div class="card-body-padding">
+                    <div class="invoice-header-details">
+                        <div class="school-brand-block">
+                            <h3>Gumma Public School</h3>
+                            <p>Sector-4, Admission Division, Shimla</p>
+                        </div>
+                        <div class="invoice-due-date">
+                            <span>Status:</span>
+                            {% if fee.status == 'Paid' %}
+                                <strong class="badge badge-success font-bold-large">PAID</strong>
+                            {% else %}
+                                <strong class="badge badge-danger font-bold-large">UNPAID</strong>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <table class="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Item Description</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Admission Processing & Evaluation Fee</strong>
+                                    <p class="text-muted text-xs">One-time registration fee for academic session 2026-2027 review.</p>
+                                </td>
+                                <td class="text-right font-semibold">₹{{ fee.amount }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="font-bold">Total Amount Due:</td>
+                                <td class="text-right font-bold text-large">₹{{ fee.amount }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    {% if fee.status == 'Paid' %}
+                    <div class="receipt-box-success">
+                        <h4>Transaction Details</h4>
+                        <div class="receipt-grid">
+                            <div>
+                                <span>Transaction ID:</span>
+                                <code>{{ fee.transaction_id }}</code>
+                            </div>
+                            <div>
+                                <span>Payment Date & Time:</span>
+                                <span>{{ fee.payment_date }}</span>
+                            </div>
+                            <div>
+                                <span>Method:</span>
+                                <span>Secure Portal Netbanking</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card payment-gateway-card">
+                <div class="card-header">
+                    <h2>Checkout Gate</h2>
+                </div>
+                <div class="card-body-padding">
+                    {% if fee.status == 'Paid' %}
+                    <div class="payment-complete-feedback">
+                        <div class="feedback-icon-success">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <h3>Payment Completed!</h3>
+                        <p>Your payment has been successfully recorded in our ledger. Your admission documents will be audited shortly by the registration team.</p>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary w-full">Return to Dashboard</a>
+                    </div>
+                    {% else %}
+                    <div class="payment-instruction-block">
+                        <p>Please click the button below to process the mock payment. In production, this redirects you to our secure payment service provider gateway (Razorpay/PayTM).</p>
+                    </div>
+                    
+                    <form action="{{ url_for('fees') }}" method="POST" class="mock-payment-form">
+                        <div class="input-group">
+                            <label>Payment Method Selection</label>
+                            <div class="payment-method-selector">
+                                <label class="method-option">
+                                    <input type="radio" name="payment_method" value="netbanking" checked>
+                                    <span>Debit/Credit Card / UPI</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="cardNumber">Mock Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="4111 2222 3333 4444" disabled value="•••• •••• •••• 4242">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-pay w-full">
+                            <span>Process Payment (₹{{ fee.amount }})</span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        {% endif %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

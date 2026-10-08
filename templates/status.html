@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('admission_form') }}" class="nav-link">Apply</a>
+                <a href="{{ url_for('status') }}" class="nav-link active">Status</a>
+                <a href="{{ url_for('fees') }}" class="nav-link">Fees</a>
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">{{ current_username[0]|upper }}</div>
+                <span class="username">{{ current_username }}</span>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Real-time Application Progress Tracking</h2>
+            </div>
+            
+            <div class="card-body-padding">
+                {% if application %}
+                <div class="tracking-grid">
+                    <div class="tracker-sidebar">
+                        <div class="status-summary-box">
+                            <span class="lbl">Current Stage:</span>
+                            <h3 class="status-val-title">
+                                {% if application.status == 'Approved' %}
+                                    <span class="text-green">Admission Finalized</span>
+                                {% elif application.status == 'Pending Review' %}
+                                    <span class="text-orange">Pending Review</span>
+                                {% elif application.status == 'Verifying Documents' %}
+                                    <span class="text-blue">Verifying Documents</span>
+                                {% elif application.status == 'Action Required' %}
+                                    <span class="text-red">Action Required</span>
+                                {% else %}
+                                    <span>{{ application.status }}</span>
+                                {% endif %}
+                            </h3>
+                            <p class="tracker-desc-text">Submitted: {{ application.submitted_at|default('N/A', true) }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Steps Timeline -->
+                    <div class="tracker-timeline">
+                        <!-- Step 1: Registered -->
+                        <div class="timeline-node completed">
+                            <div class="node-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4>1. Account Registration Completed</h4>
+                                <p>Parent portal credentials configured successfully.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Form Details -->
+                        <div class="timeline-node completed">
+                            <div class="node-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4>2. Admission Form Details Filled</h4>
+                                <p>Personal details, target grade ({{ application.grade_applying }}), and contacts saved.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Document Uploads Verification -->
+                        <div class="timeline-node {% if application.status in ['Approved', 'Verifying Documents'] %}completed{% elif application.status == 'Action Required' %}error{% else %}active{% endif %}">
+                            <div class="node-icon">
+                                {% if application.status in ['Approved', 'Verifying Documents'] %}
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                {% elif application.status == 'Action Required' %}
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                {% else %}
+                                    <span class="spinner-dot"></span>
+                                {% endif %}
+                            </div>
+                            <div class="node-content">
+                                <h4>3. Document Integrity Validation</h4>
+                                {% if application.status == 'Approved' or application.status == 'Verifying Documents' %}
+                                    <p class="text-green">School Transfer Certificates and Photos verified successfully.</p>
+                                {% elif application.status == 'Action Required' %}
+                                    <p class="text-red"><strong>Action Required:</strong> Verification rejected. Please review board comments below and update files.</p>
+                                {% else %}
+                                    <p>Portal administrators are checking your uploaded documents for compliance.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Final Admission Decision -->
+                        <div class="timeline-node {% if application.status == 'Approved' %}completed{% else %}pending{% endif %}">
+                            <div class="node-icon">
+                                {% if application.status == 'Approved' %}
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                {% else %}
+                                    <span>4</span>
+                                {% endif %}
+                            </div>
+                            <div class="node-content">
+                                <h4>4. Final Board Decision & Seat Allocation</h4>
+                                {% if application.status == 'Approved' %}
+                                    <p class="text-green">Congratulations! Admission Approved. Offer letter issued.</p>
+                                {% else %}
+                                    <p>Review results and official offer letters will be posted on final audit completion.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if application.comments %}
+                <div class="comments-box-wrapper border-top-dash">
+                    <h3>Official Review Board Comments:</h3>
+                    <div class="comment-bubble">
+                        <p>{{ application.comments }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="empty-state-card">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3>No Tracking History Available</h3>
+                    <p>You must fill in the student registration details at the `/admission_form` tab to start the verification journey.</p>
+                    <a href="{{ url_for('admission_form') }}" class="btn btn-primary">Go to Admission Form</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

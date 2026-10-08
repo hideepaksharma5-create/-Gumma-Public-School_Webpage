@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery & Campus Life | Gumma Public School</title>
+    <meta name="description" content="Explore life at Gumma Public School through photographs of our lush campus, modern science and computer laboratories, sports events, and annual cultural celebrations.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- Top Utility Bar -->
+    <aside class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-bar-contacts">
+                <a href="tel:+919876543210" class="top-bar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span>+91 98765 43210</span>
+                </a>
+                <a href="mailto:info@gummapublicschool.edu.in" class="top-bar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>info@gummapublicschool.edu.in</span>
+                </a>
+            </div>
+            <div class="top-bar-right">
+                <span class="badge-affiliation">Affiliated to CBSE | Code: GPS-OD-2026</span>
+                <span class="top-bar-item">Gumma, Gajapati Dist., Odisha</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand-emblem">
+                    <img src="assets/images/school_emblem.jpg" alt="Gumma Public School Crest Emblem">
+                </div>
+                <div class="brand-info">
+                    <span class="brand-title">Gumma Public School</span>
+                    <span class="brand-motto">Knowledge • Integrity • Excellence</span>
+                </div>
+            </a>
+
+            <nav class="nav-menu" id="primary-navigation" aria-label="Primary Navigation">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="academics.html" class="nav-link">Academics</a>
+                <a href="admissions.html" class="nav-link">Admissions</a>
+                <a href="gallery.html" class="nav-link active">Gallery</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="admissions.html" class="btn btn-accent btn-header-cta">Admissions Open</a>
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1 class="page-banner-title">Campus & Moments Gallery</h1>
+            <p class="page-banner-subtitle">A visual tour of our academic spaces, sports triumphs, arts performances, and vibrant student community.</p>
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Gallery</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Main Section -->
+    <main class="section">
+        <div class="container">
+
+            <!-- Filter Buttons -->
+            <div class="gallery-filter" role="tablist" aria-label="Gallery Categories">
+                <button class="filter-btn active" data-filter="all">All Photos</button>
+                <button class="filter-btn" data-filter="campus">Campus & Building</button>
+                <button class="filter-btn" data-filter="academics">Labs & Academics</button>
+                <button class="filter-btn" data-filter="sports">Sports & Athletics</button>
+                <button class="filter-btn" data-filter="events">Annual Day & Events</button>
+            </div>
+
+            <!-- Gallery Items Grid -->
+            <div class="gallery-grid">
+                <!-- 1. Campus Hero -->
+                <div class="gallery-item" data-category="campus">
+                    <img src="assets/images/campus_hero.jpg" alt="Gumma Public School Main Administrative and Academic Block">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Campus Infrastructure</span>
+                        <h4 class="gallery-item-title">Main Academic Block & Lawns</h4>
+                    </div>
+                </div>
+
+                <!-- 2. Science Lab -->
+                <div class="gallery-item" data-category="academics">
+                    <img src="assets/images/science_lab.jpg" alt="Students conducting chemical titration in science laboratory">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Labs & Academics</span>
+                        <h4 class="gallery-item-title">Advanced Science & Chemistry Lab</h4>
+                    </div>
+                </div>
+
+                <!-- 3. Central Library -->
+                <div class="gallery-item" data-category="academics">
+                    <img src="assets/images/library_reading.jpg" alt="Students studying in the two-story library reading hall">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Labs & Academics</span>
+                        <h4 class="gallery-item-title">Central Library & Reading Hall</h4>
+                    </div>
+                </div>
+
+                <!-- 4. Sports Ground -->
+                <div class="gallery-item" data-category="sports">
+                    <img src="assets/images/sports_ground.jpg" alt="Students running on athletic track and playing basketball">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Sports & Athletics</span>
+                        <h4 class="gallery-item-title">Athletic Track & Sports Complex</h4>
+                    </div>
+                </div>
+
+                <!-- 5. Computer Lab -->
+                <div class="gallery-item" data-category="academics">
+                    <img src="assets/images/computer_lab.jpg" alt="Students coding and working on robotics projects in computer lab">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Labs & Academics</span>
+                        <h4 class="gallery-item-title">AI, Coding & Robotics Wing</h4>
+                    </div>
+                </div>
+
+                <!-- 6. Annual Day Celebration -->
+                <div class="gallery-item" data-category="events">
+                    <img src="assets/images/annual_day_event.jpg" alt="Students performing classical Indian dance on Annual Cultural Day stage">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Annual Day & Events</span>
+                        <h4 class="gallery-item-title">Annual Cultural Stage Production</h4>
+                    </div>
+                </div>
+
+                <!-- 7. Principal's Office -->
+                <div class="gallery-item" data-category="campus">
+                    <img src="assets/images/principal_portrait.jpg" alt="Principal Dr. Rajesh Sharma at executive desk">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Campus Infrastructure</span>
+                        <h4 class="gallery-item-title">Principal's Office & Academic Directorate</h4>
+                    </div>
+                </div>
+
+                <!-- 8. School Crest Heraldry -->
+                <div class="gallery-item" data-category="campus">
+                    <img src="assets/images/school_emblem.jpg" alt="Official Golden Crest and Motto Shield of Gumma Public School">
+                    <div class="gallery-overlay">
+                        <span class="gallery-item-category">Campus Infrastructure</span>
+                        <h4 class="gallery-item-title">Institutional Crest & Motto Shield</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lightbox Modal Dialog -->
+            <div class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Photo Viewer">
+                <div class="lightbox-dialog">
+                    <button class="lightbox-close" aria-label="Close Lightbox">&times;</button>
+                    <button class="lightbox-nav lightbox-prev" aria-label="Previous image">&#10094;</button>
+                    <div class="lightbox-img-wrap">
+                        <img src="" alt="" class="lightbox-img">
+                    </div>
+                    <button class="lightbox-nav lightbox-next" aria-label="Next image">&#10095;</button>
+                    <div class="lightbox-caption"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3>Gumma Public School</h3>
+                <p>Affiliated to CBSE. Committed to fostering excellence, ethical values, and holistic student growth in Gajapati, Odisha.</p>
+                <div style="font-size: 0.88rem; color: #94a3b8; display: flex; flex-direction: column; gap: 6px;">
+                    <span>📍 Main Road, Gumma, Gajapati District, Odisha - 761207</span>
+                    <span>📞 Admissions: +91 98765 43210</span>
+                    <span>✉️ Email: info@gummapublicschool.edu.in</span>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About School</a></li>
+                    <li><a href="academics.html">Academics & Syllabus</a></li>
+                    <li><a href="admissions.html">Admissions 2026-27</a></li>
+                    <li><a href="gallery.html">Photo Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-title">Admissions</h4>
+                <ul class="footer-links">
+                    <li><a href="admissions.html#criteria">Age Criteria</a></li>
+                    <li><a href="admissions.html#calculator">Fee Calculator</a></li>
+                    <li><a href="admissions.html#documents">Required Documents</a></li>
+                    <li><a href="assets/docs/GPS_Admission_Brochure_2026_27.pdf" download>Download Brochure</a></li>
+                    <li><a href="assets/docs/GPS_Admission_Application_Form.pdf" download>Offline Application Form</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-title">School Timings</h4>
+                <div style="font-size: 0.9rem; color: #94a3b8; line-height: 1.7;">
+                    <p><strong>Pre-Primary (Nursery - UKG):</strong><br>8:00 AM – 12:30 PM (Mon - Fri)</p>
+                    <p style="margin-top: 8px;"><strong>Grades I – XII:</strong><br>7:45 AM – 2:15 PM (Mon - Sat)</p>
+                    <p style="margin-top: 8px;"><strong>Office & Admissions:</strong><br>8:30 AM – 4:00 PM</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <span>&copy; 2026 Gumma Public School. All Rights Reserved.</span>
+            <span>Knowledge • Integrity • Excellence</span>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Scroll back to top">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+/* ==========================================================================
+   GUMMA PUBLIC SCHOOL - RESPONSIVE STYLESHEET (responsive.css)
+   Mobile First & Desktop Breakpoints
+   Prevents overflow-x, handles mobile drawer, collapses grids cleanly
+   ========================================================================== */
+
+/* 1. Large Laptops / Desktops (< 1200px) */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .cards-grid, .gallery-grid {
+        gap: 20px;
+    }
+
+    .faculty-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .footer-grid {
+        grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+        gap: 30px;
+    }
+}
+
+/* 2. Tablets Landscape & Medium Screens (< 992px) */
+@media screen and (max-width: 992px) {
+    .top-bar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .hero-section {
+        min-height: 480px;
+        padding: 50px 0 70px 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .stat-card:nth-child(2) {
+        border-right: none;
+    }
+
+    .stat-card:nth-child(3) {
+        border-top: 1px solid var(--color-border);
+        padding-top: 16px;
+    }
+
+    .stat-card:nth-child(4) {
+        border-top: 1px solid var(--color-border);
+        border-right: none;
+        padding-top: 16px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .principal-section {
+        grid-template-columns: 1fr;
+    }
+
+    .principal-image-wrap {
+        height: 340px;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .calc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faculty-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
+}
+
+/* 3. Tablets Portrait & Mobile Navigation Trigger (< 768px) */
+@media screen and (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+
+    body {
+        font-size: 15px;
+    }
+
+    .top-bar {
+        display: none; /* Keep mobile view compact */
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+
+    /* Mobile Drawer */
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #ffffff;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 24px 30px 24px;
+        gap: 12px;
+        transition: right var(--transition-smooth);
+        z-index: 105;
+        overflow-y: auto;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 1.05rem;
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+    /* Mobile Backdrop Overlay */
+    .nav-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-base);
+        z-index: 104;
+    }
+
+    .nav-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .header-actions .btn-header-cta {
+        display: none; /* moved or compact */
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .section {
+        padding: 50px 0;
+    }
+
+    .section-title {
+        font-size: 1.85rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faculty-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .principal-content {
+        padding: 24px;
+    }
+
+    .contact-form-card {
+        padding: 24px;
+    }
+
+    .stats-strip {
+        margin-top: -20px;
+        padding: 20px;
+    }
+}
+
+/* 4. Small Mobile Phones (< 480px) */
+@media screen and (max-width: 480px) {
+    .brand-title {
+        font-size: 1.15rem;
+    }
+
+    .brand-motto {
+        font-size: 0.68rem;
+    }
+
+    .brand-emblem {
+        width: 42px;
+        height: 42px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        border-right: none !important;
+        border-top: 1px solid var(--color-border);
+        padding-top: 12px;
+    }
+
+    .stat-card:first-child {
+        border-top: none;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .page-banner-title {
+        font-size: 1.85rem;
+    }
+
+    .calc-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .calc-total-amount {
+        font-size: 1.5rem;
+    }
+}

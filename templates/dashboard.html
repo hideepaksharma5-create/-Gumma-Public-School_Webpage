@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+            {% if current_username %}
+                <a href="{{ url_for('dashboard') }}" class="nav-link active">Dashboard</a>
+                {% if current_role == 'student' %}
+                    <a href="{{ url_for('admission_form') }}" class="nav-link">Apply</a>
+                    <a href="{{ url_for('status') }}" class="nav-link">Status</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fees</a>
+                {% elif current_role == 'admin' %}
+                    <a href="{{ url_for('students') }}" class="nav-link">Applications</a>
+                    <a href="{{ url_for('fees') }}" class="nav-link">Fee Logs</a>
+                {% endif %}
+            {% endif %}
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">{{ current_username[0]|upper }}</div>
+                <span class="username">{{ current_username }}</span>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success">
+                <span>{{ msg }}</span>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        {% if current_role == 'admin' %}
+        <!-- ========================================== -->
+        <!-- ADMIN DASHBOARD                            -->
+        <!-- ========================================== -->
+        
+        <section class="welcome-banner">
+            <div class="banner-text">
+                <h2>Welcome back, Portal Administrator</h2>
+                <p>Monitor real-time admission metrics, review student document uploads, and update registration states.</p>
+            </div>
+            <div class="banner-badge">Academic Year: 2026-27</div>
+        </section>
+
+        <!-- Admin Metrics -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon metric-blue">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <div class="metric-info">
+                    <h3>Total Applicants</h3>
+                    <p class="metric-val">{{ total }}</p>
+                    <span class="metric-trend up">All submissions</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon metric-orange">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div class="metric-info">
+                    <h3>Pending Review</h3>
+                    <p class="metric-val">{{ pending }}</p>
+                    <span class="metric-trend warning">Needs review</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon metric-green">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div class="metric-info">
+                    <h3>Approved admissions</h3>
+                    <p class="metric-val">{{ approved }}</p>
+                    <span class="metric-trend up">Status: Approved</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon metric-red">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="metric-info">
+                    <h3>Action Required</h3>
+                    <p class="metric-val">{{ action }}</p>
+                    <span class="metric-trend danger">Pending corrections</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Table & Actions -->
+        <div class="workspace-grid">
+            <div class="table-section card">
+                <div class="card-header">
+                    <h2>Recent Submissions</h2>
+                    <div class="card-actions">
+                        <a href="{{ url_for('students') }}" class="btn btn-secondary">Manage All Applications</a>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Grade</th>
+                                <th>Parent Info</th>
+                                <th>Submitted Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if recent_applications %}
+                                {% for app in recent_applications %}
+                                <tr>
+                                    <td><strong>{{ app.student_name }}</strong></td>
+                                    <td>{{ app.grade_applying }}</td>
+                                    <td>{{ app.parent_name }} ({{ app.parent_phone }})</td>
+                                    <td>{{ (app.submitted_at|default('N/A', true)).split(' ')[0] }}</td>
+                                    <td>
+                                        {% if app.status == 'Approved' %}
+                                            <span class="badge badge-success">Approved</span>
+                                        {% elif app.status == 'Pending Review' %}
+                                            <span class="badge badge-warning">Pending Review</span>
+                                        {% elif app.status == 'Action Required' %}
+                                            <span class="badge badge-danger">Action Required</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">{{ app.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('students') }}" class="action-btn-view">Manage</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No student applications submitted yet.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Side Card Info -->
+            <div class="sidebar-section card">
+                <div class="card-header">
+                    <h2>Admin Quick Notes</h2>
+                </div>
+                <div class="card-body-padding">
+                    <p class="admin-note">💡 Double check that target files are validated under `/static/uploads` folders before marking the state as <strong>Approved</strong>.</p>
+                    <p class="admin-note">📞 Registration payments should match transaction records inside the <strong>Fee Logs</strong> panel.</p>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- ========================================== -->
+        <!-- STUDENT / PARENT DASHBOARD                 -->
+        <!-- ========================================== -->
+
+        <section class="welcome-banner">
+            <div class="banner-text">
+                <h2>Welcome to your Admission Portal</h2>
+                <p>Submit registration details, check document verification status, and pay the registration fees.</p>
+            </div>
+            <div class="banner-badge">Role: Applicant</div>
+        </section>
+
+        <div class="workspace-grid">
+            
+            <!-- Left Panel: Status Board -->
+            <div class="status-summary-section card">
+                <div class="card-header">
+                    <h2>Application Overview</h2>
+                </div>
+                <div class="card-body-padding">
+                    {% if application %}
+                        <div class="status-board-widget">
+                            <div class="status-item-row">
+                                <span>Applying for:</span>
+                                <strong>{{ application.grade_applying }}</strong>
+                            </div>
+                            <div class="status-item-row">
+                                <span>Student Name:</span>
+                                <strong>{{ application.student_name }}</strong>
+                            </div>
+                            <div class="status-item-row">
+                                <span>Submission Date:</span>
+                                <span>{{ (application.submitted_at|default('N/A', true)).split(' ')[0] }}</span>
+                            </div>
+                            <div class="status-item-row border-top-dash">
+                                <span>Admissions State:</span>
+                                {% if application.status == 'Approved' %}
+                                    <span class="badge badge-success large-badge">Approved</span>
+                                {% elif application.status == 'Pending Review' %}
+                                    <span class="badge badge-warning large-badge">Pending Review</span>
+                                {% elif application.status == 'Action Required' %}
+                                    <span class="badge badge-danger large-badge">Action Required</span>
+                                {% else %}
+                                    <span class="badge badge-warning large-badge">{{ application.status }}</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if application.comments %}
+                            <div class="status-comments-box">
+                                <strong>Board Comments:</strong>
+                                <p>{{ application.comments }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="widget-actions">
+                            <a href="{{ url_for('status') }}" class="btn btn-secondary w-full">Track Admission Milestones</a>
+                            <a href="{{ url_for('admission_form') }}" class="btn btn-primary w-full">Edit/Update Form</a>
+                        </div>
+                    {% else %}
+                        <div class="empty-state-card">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <h3>Admission Form Not Submitted</h3>
+                            <p>You have registered your credentials but have not filled in the student admission details yet.</p>
+                            <a href="{{ url_for('admission_form') }}" class="btn btn-primary">Fill Admission Form Now</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Panel: Setup Checklist -->
+            <div class="sidebar-section card">
+                <div class="card-header">
+                    <h2>Admission Step Checklist</h2>
+                </div>
+                
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" {% if checklist.account %}checked{% endif %} disabled>
+                        <span class="checklist-text">Create Account Credentials</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" {% if checklist.profile %}checked{% endif %} disabled>
+                        <span class="checklist-text">Submit Student Personal Details</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" {% if checklist.docs %}checked{% endif %} disabled>
+                        <span class="checklist-text">Upload School Transfer Certificate</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" {% if checklist.payment %}checked{% endif %} disabled>
+                        <span class="checklist-text">Pay Admission Processing Fee</span>
+                    </label>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-label">
+                            <span>Checklist Progress</span>
+                            <span>
+                                {% if checklist.payment %}100%
+                                {% elif checklist.docs %}75%
+                                {% elif checklist.profile %}50%
+                                {% else %}25%
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill {% if checklist.payment %}w-100{% elif checklist.docs %}w-75{% elif checklist.profile %}w-50{% else %}w-25{% endif %}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions-btn">
+                    <a href="{{ url_for('fees') }}" class="btn btn-secondary w-full">Go to Fee Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
