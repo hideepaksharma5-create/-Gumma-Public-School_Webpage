@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAccordions();
     initInquiryForms();
     highlightActiveNavLink();
+    initPasswordToggle();
 });
 
 /* ==========================================================================
@@ -335,3 +336,32 @@ function initInquiryForms() {
         });
     });
 }
+
+/* ==========================================================================
+   8. Password Visibility Toggle
+   ========================================================================== */
+function initPasswordToggle() {
+    const toggleBtns = document.querySelectorAll('.password-toggle');
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wrapper = btn.closest('.input-wrapper');
+            if (!wrapper) return;
+            const input = wrapper.querySelector('input');
+            const showIcon = btn.querySelector('.eye-show');
+            const hideIcon = btn.querySelector('.eye-hide');
+            if (!input) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (showIcon) showIcon.classList.add('hidden');
+                if (hideIcon) hideIcon.classList.remove('hidden');
+            } else {
+                input.type = 'password';
+                if (showIcon) showIcon.classList.remove('hidden');
+                if (hideIcon) hideIcon.classList.add('hidden');
+            }
+        });
+    });
+}
+
