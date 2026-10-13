@@ -1,7 +1,7 @@
 # Gumma Public School — Official Webpage
 
 > **Knowledge • Integrity • Excellence**  
-> A modern, responsive, and deployable institutional website for **Gumma Public School**, Gajapati District, Odisha (CBSE Affiliated).
+> A modern, responsive, and deployable institutional website for **Gumma Public School**, Gumma, Shimla District, Himachal Pradesh (HP Board Affiliated).
 
 ---
 
@@ -71,7 +71,7 @@ This repository houses the complete, production-ready static website for Gumma P
 5. **📋 Admissions & Age Matrix**:
    - Transparent age criteria table compliant with National Education Policy (NEP) guidelines and document checklists.
 6. **🗺️ Interactive Map & Direct Calling**:
-   - Integrated Google Maps embed for Gumma, Odisha with click-to-call (`tel:+91...`) and click-to-email (`mailto:...`) actions.
+   - Integrated Google Maps embed for Gumma, Shimla, Himachal Pradesh with click-to-call (`tel:+91...`) and click-to-email (`mailto:...`) actions.
 
 ---
 

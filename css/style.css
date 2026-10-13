@@ -299,6 +299,7 @@ ul, ol {
     justify-content: center;
     gap: 8px;
     padding: 10px 20px;
+    min-height: 44px;
     font-weight: 600;
     font-size: 0.92rem;
     border-radius: var(--radius-md);
@@ -373,6 +374,10 @@ ul, ol {
 /* Mobile Nav Toggle Button */
 .nav-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     background: none;
     border: none;
     cursor: pointer;
@@ -912,13 +917,27 @@ ul, ol {
     color: var(--color-text-main);
 }
 
-.form-select, .form-input, .form-textarea {
+.form-select, .form-input {
     width: 100%;
+    min-height: 44px;
     padding: 10px 14px;
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-md);
     background: #ffffff;
     color: var(--color-text-main);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+    outline: none;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+    color: var(--color-text-main);
+    font-size: 0.95rem;
     transition: all var(--transition-fast);
     outline: none;
 }
@@ -964,7 +983,11 @@ ul, ol {
 }
 
 .filter-btn {
-    padding: 8px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 20px;
     font-size: 0.9rem;
     font-weight: 600;
     background: var(--color-surface);
