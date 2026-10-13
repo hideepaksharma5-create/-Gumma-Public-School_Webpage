@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academics, Curriculum & Faculty | Gumma Public School</title>
-    <meta name="description" content="Explore our CBSE-affiliated curriculum, teaching methodologies, science and computer laboratories, experienced faculty roster, and academic regulations at Gumma Public School.">
-    
+    <meta name="description"
+        content="Explore our CBSE-affiliated curriculum, teaching methodologies, science and computer laboratories, experienced faculty roster, and academic regulations at Gumma Public School.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 </head>
+
 <body>
 
     <!-- Top Utility Bar -->
@@ -22,17 +27,24 @@
         <div class="container top-bar-inner">
             <div class="top-bar-contacts">
                 <a href="tel:+919876543210" class="top-bar-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                        </path>
+                    </svg>
                     <span>+91 98765 43210</span>
                 </a>
                 <a href="mailto:info@gummapublicschool.edu.in" class="top-bar-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
                     <span>info@gummapublicschool.edu.in</span>
                 </a>
             </div>
             <div class="top-bar-right">
-                <span class="badge-affiliation">Affiliated to CBSE | Code: GPS-OD-2026</span>
-                <span class="top-bar-item">Gumma, Gajapati Dist., Odisha</span>
+                <span class="badge-affiliation">Affiliated to HP Board | Code: GPS-OD-2026</span>
+                <span class="top-bar-item">Gumma, Shimla Dist., Himachal Pradesh</span>
             </div>
         </div>
     </aside>
@@ -42,7 +54,8 @@
         <div class="container nav-container">
             <a href="{{ url_for('home') }}" class="brand-link">
                 <div class="brand-emblem">
-                    <img src="{{ url_for('static', filename='images/school_emblem.jpg') }}" alt="Gumma Public School Crest Emblem">
+                    <img src="{{ url_for('static', filename='images/school_emblem.jpg') }}"
+                        alt="Gumma Public School Crest Emblem">
                 </div>
                 <div class="brand-info">
                     <span class="brand-title">Gumma Public School</span>
@@ -59,19 +72,21 @@
                 <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
 
                 {% if current_username %}
-                    <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
                 {% endif %}
             </nav>
 
             <div class="header-actions">
                 {% if current_username %}
-                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-sm">Dashboard</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-sm">Dashboard</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="btn btn-outline btn-sm">Sign In</a>
-                    <a href="{{ url_for('admissions') }}" class="btn btn-accent btn-sm">Admissions Open</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-sm">Sign In</a>
+                <a href="{{ url_for('admissions') }}" class="btn btn-accent btn-sm">Admissions Open</a>
                 {% endif %}
-                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-navigation">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false"
+                    aria-controls="primary-navigation">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -85,7 +100,8 @@
     <section class="page-banner">
         <div class="container">
             <h1 class="page-banner-title">Academics & Pedagogy</h1>
-            <p class="page-banner-subtitle">A balanced, rigorous curriculum empowering inquiry, critical analysis, and future-ready capabilities.</p>
+            <p class="page-banner-subtitle">A balanced, rigorous curriculum empowering inquiry, critical analysis, and
+                future-ready capabilities.</p>
             <div class="breadcrumbs">
                 <a href="{{ url_for('home') }}">Home</a>
                 <span>/</span>
@@ -100,7 +116,8 @@
             <div class="section-header">
                 <span class="section-eyebrow">Academic Structure</span>
                 <h2 class="section-title">Educational Pathways</h2>
-                <p class="section-description">Aligned with CBSE guidelines and the National Education Policy (NEP) for holistic learning.</p>
+                <p class="section-description">Aligned with HP Board guidelines and the National Education Policy (NEP)
+                    for holistic learning.</p>
             </div>
 
             <div class="cards-grid">
@@ -108,8 +125,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Early Years Foundation</span>
                     <h3 class="feature-card-title">Pre-Primary (Nursery, LKG, UKG)</h3>
-                    <p class="feature-card-desc">Play-way methodology focusing on motor skills, phonics, number sense, storytelling, music, and social adaptation in a vibrant child-centric wing.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Play-way methodology focusing on motor skills, phonics, number sense,
+                        storytelling, music, and social adaptation in a vibrant child-centric wing.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>Sensory & Activity Kits</li>
                         <li>Phonics & Language Immersion</li>
                         <li>Safe Indoor Play Zone</li>
@@ -120,8 +139,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Preparatory Stage</span>
                     <h3 class="feature-card-title">Primary School (Grades I – V)</h3>
-                    <p class="feature-card-desc">Building strong foundations in English, Regional Language, Mathematics, Environmental Science, Computer Fundamentals, and Creative Arts.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Building strong foundations in English, Regional Language, Mathematics,
+                        Environmental Science, Computer Fundamentals, and Creative Arts.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>Interactive Smartboards</li>
                         <li>Math Lab & Reading Circles</li>
                         <li>Weekly Sports & Yoga</li>
@@ -132,8 +153,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Middle Stage</span>
                     <h3 class="feature-card-title">Middle School (Grades VI – VIII)</h3>
-                    <p class="feature-card-desc">Fostering analytical curiosity with specialized subjects in General Science (Physics, Chem, Bio), Social Sciences, Coding Basics, and Third Language.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Fostering analytical curiosity with specialized subjects in General
+                        Science (Physics, Chem, Bio), Social Sciences, Coding Basics, and Third Language.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>Hands-on Science Labs</li>
                         <li>Robotics & Scratch Programming</li>
                         <li>Debating & Quiz Club</li>
@@ -144,8 +167,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Secondary Stage</span>
                     <h3 class="feature-card-title">Secondary (Grades IX & X)</h3>
-                    <p class="feature-card-desc">Comprehensive preparation for the CBSE All India Secondary School Examination (AISSE) with regular mock tests and remedial mentorship.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Comprehensive preparation for the HP Board All India Secondary School
+                        Examination (AISSE) with regular mock tests and remedial mentorship.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>CBSE Board Alignment</li>
                         <li>Career Counseling Workshops</li>
                         <li>Pre-board Assessment Cycles</li>
@@ -156,8 +181,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Senior Secondary</span>
                     <h3 class="feature-card-title">Science Stream (XI & XII)</h3>
-                    <p class="feature-card-desc">Physics, Chemistry, Mathematics, Biology, and Computer Science (Python), coupled with integrated coaching for JEE, NEET, and Olympiads.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Physics, Chemistry, Mathematics, Biology, and Computer Science
+                        (Python), coupled with integrated coaching for JEE, NEET, and Olympiads.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>Advanced Research Labs</li>
                         <li>Olympiad Problem Solving</li>
                         <li>Expert Guest Seminars</li>
@@ -168,8 +195,10 @@
                 <article class="feature-card" style="padding: 28px;">
                     <span class="feature-tag">Senior Secondary</span>
                     <h3 class="feature-card-title">Commerce Stream (XI & XII)</h3>
-                    <p class="feature-card-desc">Accountancy, Business Studies, Economics, Mathematics/Informatics Practices, developing financial literacy and entrepreneurship aptitude.</p>
-                    <ul style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
+                    <p class="feature-card-desc">Accountancy, Business Studies, Economics, Mathematics/Informatics
+                        Practices, developing financial literacy and entrepreneurship aptitude.</p>
+                    <ul
+                        style="font-size: 0.88rem; color: var(--color-text-muted); list-style: disc; margin-left: 18px; margin-bottom: 16px;">
                         <li>Financial Modeling Projects</li>
                         <li>Commerce & Stock Club</li>
                         <li>CA Foundation Mentorship</li>
@@ -178,13 +207,22 @@
             </div>
 
             <!-- Download Syllabus CTA -->
-            <div style="background: var(--color-primary-subtle); border-radius: var(--radius-lg); padding: 30px; margin-top: 50px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; border: 1.5px solid var(--color-border);">
+            <div
+                style="background: var(--color-primary-subtle); border-radius: var(--radius-lg); padding: 30px; margin-top: 50px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; border: 1.5px solid var(--color-border);">
                 <div>
-                    <h3 style="font-family: var(--font-heading); color: var(--color-primary); font-size: 1.35rem; margin-bottom: 4px;">Download 2026-27 Academic Curriculum Guide</h3>
-                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">Get detailed class-wise subject syllabus, booklists, evaluation criteria, and academic calendar.</p>
+                    <h3
+                        style="font-family: var(--font-heading); color: var(--color-primary); font-size: 1.35rem; margin-bottom: 4px;">
+                        Download 2026-27 Academic Curriculum Guide</h3>
+                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">Get detailed class-wise subject
+                        syllabus, booklists, evaluation criteria, and academic calendar.</p>
                 </div>
-                <a href="{{ url_for('static', filename='docs/GPS_Syllabus_Curriculum_Guide.pdf') }}" class="btn btn-primary" download>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <a href="{{ url_for('static', filename='docs/GPS_Syllabus_Curriculum_Guide.pdf') }}"
+                    class="btn btn-primary" download>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
                     <span>Download Syllabus (PDF)</span>
                 </a>
             </div>
@@ -196,37 +234,44 @@
                 <div class="section-header">
                     <span class="section-eyebrow">World-Class Facilities</span>
                     <h2 class="section-title">Academic Infrastructure</h2>
-                    <p class="section-description">Modern spaces engineered to inspire hands-on discovery and deep focus.</p>
+                    <p class="section-description">Modern spaces engineered to inspire hands-on discovery and deep
+                        focus.</p>
                 </div>
 
                 <div class="cards-grid">
                     <div class="feature-card">
                         <div class="feature-card-img">
-                            <img src="{{ url_for('static', filename='images/science_lab.jpg') }}" alt="Science Laboratory Experiments">
+                            <img src="{{ url_for('static', filename='images/science_lab.jpg') }}"
+                                alt="Science Laboratory Experiments">
                         </div>
                         <div class="feature-card-body">
                             <h3 class="feature-card-title">Composite Science Labs</h3>
-                            <p class="feature-card-desc">Equipped with specialized equipment, optical microscopes, fume hoods, and safety wash stations for senior board practicums.</p>
+                            <p class="feature-card-desc">Equipped with specialized equipment, optical microscopes, fume
+                                hoods, and safety wash stations for senior board practicums.</p>
                         </div>
                     </div>
 
                     <div class="feature-card">
                         <div class="feature-card-img">
-                            <img src="{{ url_for('static', filename='images/computer_lab.jpg') }}" alt="Computer Lab and Innovation Centre">
+                            <img src="{{ url_for('static', filename='images/computer_lab.jpg') }}"
+                                alt="Computer Lab and Innovation Centre">
                         </div>
                         <div class="feature-card-body">
                             <h3 class="feature-card-title">AI & Robotics Lab</h3>
-                            <p class="feature-card-desc">60+ desktop stations, Arduino kits, 3D printing demonstrator, and dedicated high-speed broadband network.</p>
+                            <p class="feature-card-desc">60+ desktop stations, Arduino kits, 3D printing demonstrator,
+                                and dedicated high-speed broadband network.</p>
                         </div>
                     </div>
 
                     <div class="feature-card">
                         <div class="feature-card-img">
-                            <img src="{{ url_for('static', filename='images/library_reading.jpg') }}" alt="Central Library and Resource Centre">
+                            <img src="{{ url_for('static', filename='images/library_reading.jpg') }}"
+                                alt="Central Library and Resource Centre">
                         </div>
                         <div class="feature-card-body">
                             <h3 class="feature-card-title">Central Library & Reading Hall</h3>
-                            <p class="feature-card-desc">15,000+ titles spanning classical literature, science encyclopedias, competitive journals, and national daily periodicals.</p>
+                            <p class="feature-card-desc">15,000+ titles spanning classical literature, science
+                                encyclopedias, competitive journals, and national daily periodicals.</p>
                         </div>
                     </div>
                 </div>
@@ -239,13 +284,14 @@
                 <div class="section-header">
                     <span class="section-eyebrow">Our Inspiring Educators</span>
                     <h2 class="section-title">Faculty & Mentors</h2>
-                    <p class="section-description">Qualified, passionate teachers dedicated to individual student growth and pedagogical excellence.</p>
+                    <p class="section-description">Qualified, passionate teachers dedicated to individual student growth
+                        and pedagogical excellence.</p>
                 </div>
 
                 <div class="faculty-grid">
                     <div class="faculty-card">
                         <div class="faculty-avatar">RS</div>
-                        <h4 class="faculty-name">Dr. Rajesh Sharma</h4>
+                        <h4 class="faculty-name">Dr. Bhuvan Thakur </h4>
                         <div class="faculty-role">Principal & Science Head</div>
                         <div class="faculty-qualification">M.Sc., M.Ed., Ph.D. (24+ yrs exp)</div>
                     </div>
@@ -280,9 +326,10 @@
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h3>Gumma Public School</h3>
-                <p>Affiliated to CBSE. Committed to fostering excellence, ethical values, and holistic student growth in Gajapati, Odisha.</p>
+                <p>Affiliated to CBSE. Committed to fostering excellence, ethical values, and holistic student growth in
+                    Gajapati, Odisha.</p>
                 <div style="font-size: 0.88rem; color: #94a3b8; display: flex; flex-direction: column; gap: 6px;">
-                    <span>📍 Main Road, Gumma, Gajapati District, Odisha - 761207</span>
+                    <span>📍 Main Road, Gumma, Shimla District, Himachal Pradesh - 171018</span>
                     <span>📞 Admissions: +91 98765 43210</span>
                     <span>✉️ Email: info@gummapublicschool.edu.in</span>
                 </div>
@@ -306,7 +353,8 @@
                     <li><a href="{{ url_for('admissions') }}#criteria">Age Criteria</a></li>
                     <li><a href="{{ url_for('admissions') }}#calculator">Fee Calculator</a></li>
                     <li><a href="{{ url_for('login') }}">Sign In</a></li>
-                    <li><a href="{{ url_for('static', filename='docs/GPS_Admission_Brochure_2026_27.pdf') }}" download>Download Brochure</a></li>
+                    <li><a href="{{ url_for('static', filename='docs/GPS_Admission_Brochure_2026_27.pdf') }}"
+                            download>Download Brochure</a></li>
                 </ul>
             </div>
 
@@ -328,11 +376,13 @@
 
     <!-- Back to Top Button -->
     <button class="back-to-top" aria-label="Scroll back to top">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </button>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+
 </html>
