@@ -289,3 +289,10 @@
         font-size: 1.5rem;
     }
 }
+
+/* 6. Visibility helpers for navigation */
+@media screen and (min-width: 769px) {
+    .mobile-only-nav {
+        display: none !important;
+    }
+}
