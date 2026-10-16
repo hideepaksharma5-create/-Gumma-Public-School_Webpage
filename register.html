@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="login-body">
+    <!-- Navbar Header -->
+    <header class="dash-header absolute-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="nav-link-header" style="color: #ffffff; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <!-- Brand/Hero Section -->
+        <div class="login-hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="school-logo" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: #ffffff; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 3px solid var(--color-accent); box-shadow: var(--shadow-gold);">
+                    <img src="assets/images/school_emblem.jpg" alt="Gumma Public School Crest" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <h1 class="school-name">Gumma Public School</h1>
+                <p class="school-motto">Create an account to begin the student registration and admission verification workflow.</p>
+                <div class="hero-footer" style="margin-top: 30px; font-size: 0.88rem; color: #cbd5e1;">
+                    <span>HP Board Affiliated (GPS-HP-2026)</span>
+                    <span class="divider" style="margin: 0 10px;">•</span>
+                    <span>Admission Portal</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="login-form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p>Register parent/student portal credentials</p>
+                </div>
+
+                <div class="alert alert-error" id="error-message" style="display: none;">
+                    <svg class="alert-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span id="error-text">Registration error</span>
+                </div>
+
+                <form class="auth-form" id="registerForm">
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </span>
+                            <input type="text" id="username" name="username" placeholder="Choose a unique username" required autocomplete="username">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </span>
+                            <input type="password" id="password" name="password" placeholder="Create a strong password" required autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </span>
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat the password" required autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%; min-height: 48px; font-weight: 700; margin-top: 8px;">
+                        <span>Sign Up</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="form-footer" style="margin-top: 24px; text-align: center; font-size: 0.92rem; color: var(--color-text-muted);">
+                    <p>Already have an account? <a href="login.html" style="color: var(--color-primary); font-weight: 700; text-decoration: none;">Sign In here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registerForm');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const confirmInput = document.getElementById('confirm_password');
+            const errorAlert = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                errorAlert.style.display = 'none';
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                const confirmPassword = confirmInput.value;
+
+                if (!username || !password || !confirmPassword) {
+                    errorText.textContent = 'Please fill in all fields.';
+                    errorAlert.style.display = 'flex';
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    errorText.textContent = 'Passwords do not match. Please verify.';
+                    errorAlert.style.display = 'flex';
+                    return;
+                }
+
+                if (password.length < 4) {
+                    errorText.textContent = 'Password must be at least 4 characters long.';
+                    errorAlert.style.display = 'flex';
+                    return;
+                }
+
+                // Save registered user info
+                sessionStorage.setItem('gps_flash', `Registration successful for "${username}"! Please sign in with your credentials.`);
+                
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 400);
+            });
+        });
+    </script>
+</body>
+</html>

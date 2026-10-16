@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Center - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="admission_form.html" class="nav-link">Apply</a>
+            <a href="status.html" class="nav-link">Status</a>
+            <a href="fees.html" class="nav-link active">Fees</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">S</div>
+                <span class="username">Student Portal</span>
+            </div>
+            <a href="login.html" class="btn-logout" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; padding: 6px 14px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">Sign In / Switch</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        <div class="workspace-grid">
+            <!-- Invoice Left Card -->
+            <div class="card invoice-card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Admission Fee Invoice</h2>
+                    <span class="invoice-number" style="font-weight: 700; color: var(--color-primary);">INV-2026-GPS-089</span>
+                </div>
+                
+                <div class="card-body-padding" style="padding: 24px;">
+                    <div class="invoice-header-details" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <div class="school-brand-block">
+                            <h3 style="margin: 0; color: var(--color-primary-dark);">Gumma Public School</h3>
+                            <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.85rem;">Gumma, Shimla Dist., Himachal Pradesh (HP Board Code: GPS-HP-2026)</p>
+                        </div>
+                        <div class="invoice-due-date">
+                            <span id="paymentStatusBadge" class="badge badge-warning" style="font-size: 0.95rem; padding: 6px 14px;">PENDING PAYMENT</span>
+                        </div>
+                    </div>
+
+                    <table class="invoice-table" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--color-border); text-align: left;">
+                                <th style="padding: 10px 0; font-size: 0.88rem; color: var(--color-text-muted);">Fee Description</th>
+                                <th style="padding: 10px 0; text-align: right; font-size: 0.88rem; color: var(--color-text-muted);">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--color-border);">
+                                <td style="padding: 14px 0;">
+                                    <strong>Admission Registration & Processing Fee</strong>
+                                    <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--color-text-muted);">One-time official registration fee for academic session 2026-2027.</p>
+                                </td>
+                                <td style="padding: 14px 0; text-align: right; font-weight: 600;">₹500</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--color-border);">
+                                <td style="padding: 14px 0;">
+                                    <strong>Term 1 Tuition & Laboratory Fee (Installment 1)</strong>
+                                    <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--color-text-muted);">April – June 2026 Quarter under HP Board Curriculum.</p>
+                                </td>
+                                <td style="padding: 14px 0; text-align: right; font-weight: 600;">₹10,250</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="padding: 16px 0; font-size: 1.05rem; font-weight: 700; color: var(--color-primary-dark);">Total Amount Payable:</td>
+                                <td style="padding: 16px 0; text-align: right; font-size: 1.25rem; font-weight: 800; color: var(--color-primary);" id="totalDueVal">₹10,750</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div id="receiptBox" style="display: none; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: var(--radius-md); padding: 18px; margin-top: 16px;">
+                        <h4 style="margin: 0 0 10px 0; color: #065f46; display: flex; align-items: center; gap: 8px;">
+                            <span>✓ Official Transaction Receipt</span>
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; font-size: 0.88rem; color: #065f46;">
+                            <div><strong>Txn ID:</strong> <code id="receiptTxn">GPS-TXN-984218</code></div>
+                            <div><strong>Date:</strong> <span id="receiptDate">Today</span></div>
+                            <div><strong>Mode:</strong> UPI / Netbanking</div>
+                            <div><strong>Status:</strong> <span style="font-weight: 700; color: #059669;">Settled</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Right Card -->
+            <div class="card payment-gateway-card">
+                <div class="card-header">
+                    <h2>Instant Fee Payment Gate</h2>
+                </div>
+                <div class="card-body-padding" style="padding: 24px;">
+                    <div id="paymentPendingBox">
+                        <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 20px;">
+                            Select your preferred online payment mode to complete admission fee payment securely. Instant digital receipt will be generated.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                            <label style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid var(--color-primary); background: #eff6ff; border-radius: var(--radius-md); cursor: pointer;">
+                                <input type="radio" name="payMethod" value="upi" checked style="accent-color: var(--color-primary);">
+                                <div>
+                                    <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark);">UPI (Google Pay / PhonePe / Paytm / BHIM)</strong>
+                                    <span style="font-size: 0.78rem; color: var(--color-text-muted);">Instant zero-surcharge verification</span>
+                                </div>
+                            </label>
+
+                            <label style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer;">
+                                <input type="radio" name="payMethod" value="card" style="accent-color: var(--color-primary);">
+                                <div>
+                                    <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark);">Credit / Debit Card (Visa / Mastercard / RuPay)</strong>
+                                    <span style="font-size: 0.78rem; color: var(--color-text-muted);">Encrypted 256-bit gateway</span>
+                                </div>
+                            </label>
+
+                            <label style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer;">
+                                <input type="radio" name="payMethod" value="netbanking" style="accent-color: var(--color-primary);">
+                                <div>
+                                    <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark);">Net Banking (SBI / HDFC / PNB / ICICI)</strong>
+                                    <span style="font-size: 0.78rem; color: var(--color-text-muted);">All major Indian banks supported</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <button type="button" id="payNowBtn" class="btn btn-accent btn-lg" style="width: 100%; box-shadow: var(--shadow-gold);">
+                            <span>Pay ₹10,750 & Complete Admission</span>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+
+                    <div id="paymentSuccessBox" style="display: none; text-align: center; padding: 20px 0;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <h3 style="color: #065f46; margin-bottom: 8px;">Payment Completed Successfully!</h3>
+                        <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 24px;">Your payment of ₹10,750 has been recorded. Admission enrollment is now locked in Gumma Public School admissions register.</p>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <a href="dashboard.html" class="btn btn-primary btn-sm">Return to Dashboard</a>
+                            <a href="status.html" class="btn btn-outline btn-sm">Track Final Status</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const payNowBtn = document.getElementById('payNowBtn');
+            const pendingBox = document.getElementById('paymentPendingBox');
+            const successBox = document.getElementById('paymentSuccessBox');
+            const statusBadge = document.getElementById('paymentStatusBadge');
+            const receiptBox = document.getElementById('receiptBox');
+            const receiptTxn = document.getElementById('receiptTxn');
+            const receiptDate = document.getElementById('receiptDate');
+
+            payNowBtn.addEventListener('click', () => {
+                payNowBtn.disabled = true;
+                payNowBtn.textContent = 'Processing Transaction...';
+
+                setTimeout(() => {
+                    pendingBox.style.display = 'none';
+                    successBox.style.display = 'block';
+                    statusBadge.textContent = 'PAID';
+                    statusBadge.className = 'badge badge-success';
+                    
+                    const randomTxn = 'GPS-TXN-' + Math.floor(100000 + Math.random() * 900000);
+                    receiptTxn.textContent = randomTxn;
+                    receiptDate.textContent = new Date().toLocaleDateString('en-IN', {
+                        year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+                    receiptBox.style.display = 'block';
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>

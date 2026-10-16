@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Form - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="admission_form.html" class="nav-link active">Apply</a>
+            <a href="status.html" class="nav-link">Status</a>
+            <a href="fees.html" class="nav-link">Fees</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">S</div>
+                <span class="username">Student Portal</span>
+            </div>
+            <a href="login.html" class="btn-logout" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; padding: 6px 14px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">Sign In / Switch</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        <div class="card max-w-form" style="max-width: 900px; margin: 0 auto;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h2>Student Admission Application</h2>
+                    <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.9rem;">HP Board Affiliated • Gumma, Shimla Dist.</p>
+                </div>
+                <span class="badge badge-primary">Academic Session 2026-2027</span>
+            </div>
+            
+            <div class="card-body" style="padding: 28px;">
+                <div id="formAlertSuccess" class="alert alert-success" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 14px 18px; border-radius: var(--radius-md); margin-bottom: 20px;">
+                    <span>✓ Application submitted successfully! Redirecting to Status page...</span>
+                </div>
+
+                <form id="onlineAdmissionForm" class="admission-form">
+                    <!-- Section 1: Student Info -->
+                    <div class="form-section-group" style="margin-bottom: 30px;">
+                        <h3 class="form-section-title" style="font-size: 1.15rem; color: var(--color-primary-dark); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1.5px solid var(--color-border);">1. Student Personal Details</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="input-group" style="grid-column: 1 / -1;">
+                                <label for="student_name" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Full Name of Student *</label>
+                                <input type="text" id="student_name" name="student_name" required placeholder="First and last name" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                            <div class="input-group">
+                                <label for="dob" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Date of Birth *</label>
+                                <input type="date" id="dob" name="dob" required style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                            <div class="input-group">
+                                <label for="gender" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Gender *</label>
+                                <select id="gender" name="gender" required style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Parent Info -->
+                    <div class="form-section-group" style="margin-bottom: 30px;">
+                        <h3 class="form-section-title" style="font-size: 1.15rem; color: var(--color-primary-dark); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1.5px solid var(--color-border);">2. Parent / Guardian Details</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="input-group" style="grid-column: 1 / -1;">
+                                <label for="parent_name" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Parent/Guardian Full Name *</label>
+                                <input type="text" id="parent_name" name="parent_name" required placeholder="Full name of father/mother/guardian" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                            <div class="input-group">
+                                <label for="parent_email" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Email Address *</label>
+                                <input type="email" id="parent_email" name="parent_email" required placeholder="parent@example.com" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                            <div class="input-group">
+                                <label for="parent_phone" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Mobile Number *</label>
+                                <input type="tel" id="parent_phone" name="parent_phone" required placeholder="10-digit mobile number" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Academic Details -->
+                    <div class="form-section-group" style="margin-bottom: 30px;">
+                        <h3 class="form-section-title" style="font-size: 1.15rem; color: var(--color-primary-dark); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1.5px solid var(--color-border);">3. Class Seeking Admission</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="input-group">
+                                <label for="grade_select" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Target Grade *</label>
+                                <select id="grade_select" name="grade_select" required style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                                    <option value="" disabled selected>Choose Class</option>
+                                    <optgroup label="Primary Wing">
+                                        <option value="Nursery">Nursery / LKG / UKG</option>
+                                        <option value="Class 1">Class 1</option>
+                                        <option value="Class 2">Class 2</option>
+                                        <option value="Class 3">Class 3</option>
+                                        <option value="Class 4">Class 4</option>
+                                        <option value="Class 5">Class 5</option>
+                                    </optgroup>
+                                    <optgroup label="Middle Wing">
+                                        <option value="Class 6">Class 6</option>
+                                        <option value="Class 7">Class 7</option>
+                                        <option value="Class 8">Class 8</option>
+                                    </optgroup>
+                                    <optgroup label="Secondary & Senior Secondary (HP Board)">
+                                        <option value="Class 9">Class 9 (Matric Stream)</option>
+                                        <option value="Class 10">Class 10 (Matric Stream)</option>
+                                        <option value="Class 11 Science">Class 11 — Science Stream (Medical / Non-Medical)</option>
+                                        <option value="Class 11 Commerce">Class 11 — Commerce Stream</option>
+                                        <option value="Class 11 Arts">Class 11 — Humanities & Arts Stream</option>
+                                        <option value="Class 12">Class 12 (Board Session 2026-27)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="previous_school" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">Previous School Attended</label>
+                                <input type="text" id="previous_school" name="previous_school" placeholder="School name & city" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Document Uploads -->
+                    <div class="form-section-group" style="margin-bottom: 30px;">
+                        <h3 class="form-section-title" style="font-size: 1.15rem; color: var(--color-primary-dark); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1.5px solid var(--color-border);">4. Mandatory Document Uploads</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                            <div class="doc-upload-card" style="background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+                                <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark); margin-bottom: 4px;">Student Passport Photo *</strong>
+                                <span style="display: block; font-size: 0.78rem; color: var(--color-text-muted); margin-bottom: 10px;">Recent passport size photo (JPG/PNG &lt; 2MB)</span>
+                                <input type="file" accept="image/*" class="file-input" style="font-size: 0.85rem;">
+                            </div>
+
+                            <div class="doc-upload-card" style="background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+                                <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark); margin-bottom: 4px;">Birth Certificate *</strong>
+                                <span style="display: block; font-size: 0.78rem; color: var(--color-text-muted); margin-bottom: 10px;">Issued by Municipal authority or Gram Panchayat (PDF/JPG)</span>
+                                <input type="file" accept=".pdf,image/*" class="file-input" style="font-size: 0.85rem;">
+                            </div>
+
+                            <div class="doc-upload-card" style="background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+                                <strong style="display: block; font-size: 0.92rem; color: var(--color-primary-dark); margin-bottom: 4px;">Previous Report Card / TC</strong>
+                                <span style="display: block; font-size: 0.78rem; color: var(--color-text-muted); margin-bottom: 10px;">Transfer Certificate & last year marksheet (PDF)</span>
+                                <input type="file" accept=".pdf,image/*" class="file-input" style="font-size: 0.85rem;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1.5px solid var(--color-border);">
+                        <button type="submit" id="submitFormBtn" class="btn btn-accent btn-lg" style="min-width: 280px; box-shadow: var(--shadow-gold);">
+                            <span>Submit Admission Application</span>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('onlineAdmissionForm');
+            const alertBox = document.getElementById('formAlertSuccess');
+            const submitBtn = document.getElementById('submitFormBtn');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting Application...';
+
+                const appData = {
+                    student_name: document.getElementById('student_name').value,
+                    dob: document.getElementById('dob').value,
+                    gender: document.getElementById('gender').value,
+                    parent_name: document.getElementById('parent_name').value,
+                    parent_email: document.getElementById('parent_email').value,
+                    parent_phone: document.getElementById('parent_phone').value,
+                    grade: document.getElementById('grade_select').value,
+                    previous_school: document.getElementById('previous_school').value,
+                    submitted_at: new Date().toISOString()
+                };
+
+                localStorage.setItem('gps_admission_app', JSON.stringify(appData));
+                alertBox.style.display = 'block';
+
+                setTimeout(() => {
+                    window.location.href = 'status.html';
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>

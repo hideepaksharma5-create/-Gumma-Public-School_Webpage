@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Applications - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="students.html" class="nav-link active">Applications</a>
+            <a href="fees.html" class="nav-link">Fee Logs</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">A</div>
+                <span class="username">Administrator</span>
+            </div>
+            <a href="login.html" class="btn-logout" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; padding: 6px 14px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">Sign In / Switch</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        <div class="card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <h2>Manage Student Applications (Session 2026-27)</h2>
+                <div class="card-actions">
+                    <input type="text" id="tableSearch" placeholder="Search applicants..." class="search-input" style="padding: 8px 14px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.88rem;">
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Applicant ID</th>
+                            <th>Student Details</th>
+                            <th>Parent Contact</th>
+                            <th>Target Grade</th>
+                            <th>Fee Status</th>
+                            <th>Admission State</th>
+                            <th>Control</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <tr>
+                            <td><code>#GPS-101</code></td>
+                            <td>
+                                <strong>Aarav Sharma</strong><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">DOB: 12/04/2010 • Male</span>
+                            </td>
+                            <td>
+                                <span>Ramesh Sharma</span><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">📞 +91 98160 12345</span>
+                            </td>
+                            <td><span class="badge badge-primary">Class 11 (Science)</span></td>
+                            <td><span class="badge badge-success">Paid</span></td>
+                            <td><span class="badge badge-success" id="state-101">Approved</span></td>
+                            <td>
+                                <select onchange="document.getElementById('state-101').textContent = this.value; document.getElementById('state-101').className = 'badge ' + (this.value === 'Approved' ? 'badge-success' : 'badge-warning');" style="padding: 4px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--color-border); font-size: 0.82rem;">
+                                    <option value="Approved" selected>Approved</option>
+                                    <option value="Pending Review">Pending Review</option>
+                                    <option value="Action Required">Action Required</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>#GPS-102</code></td>
+                            <td>
+                                <strong>Priya Thakur</strong><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">DOB: 24/08/2012 • Female</span>
+                            </td>
+                            <td>
+                                <span>Sunil Thakur</span><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">📞 +91 94180 54321</span>
+                            </td>
+                            <td><span class="badge badge-primary">Class 9</span></td>
+                            <td><span class="badge badge-warning">Pending</span></td>
+                            <td><span class="badge badge-warning" id="state-102">Pending Review</span></td>
+                            <td>
+                                <select onchange="document.getElementById('state-102').textContent = this.value; document.getElementById('state-102').className = 'badge ' + (this.value === 'Approved' ? 'badge-success' : 'badge-warning');" style="padding: 4px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--color-border); font-size: 0.82rem;">
+                                    <option value="Pending Review" selected>Pending Review</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Action Required">Action Required</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>#GPS-103</code></td>
+                            <td>
+                                <strong>Rohit Verma</strong><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">DOB: 05/11/2014 • Male</span>
+                            </td>
+                            <td>
+                                <span>Anil Verma</span><br>
+                                <span style="font-size: 0.82rem; color: var(--color-text-muted);">📞 +91 98055 88990</span>
+                            </td>
+                            <td><span class="badge badge-primary">Class 6</span></td>
+                            <td><span class="badge badge-success">Paid</span></td>
+                            <td><span class="badge badge-success" id="state-103">Approved</span></td>
+                            <td>
+                                <select onchange="document.getElementById('state-103').textContent = this.value; document.getElementById('state-103').className = 'badge ' + (this.value === 'Approved' ? 'badge-success' : 'badge-warning');" style="padding: 4px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--color-border); font-size: 0.82rem;">
+                                    <option value="Approved" selected>Approved</option>
+                                    <option value="Pending Review">Pending Review</option>
+                                    <option value="Action Required">Action Required</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('tableSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#studentsTableBody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

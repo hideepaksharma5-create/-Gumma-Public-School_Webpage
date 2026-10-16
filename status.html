@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status - Gumma Public School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <div class="dash-logo">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Gumma Public School</h1>
+                    <span>Admission Portal</span>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="admission_form.html" class="nav-link">Apply</a>
+            <a href="status.html" class="nav-link active">Status</a>
+            <a href="fees.html" class="nav-link">Fees</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="avatar">S</div>
+                <span class="username">Student Portal</span>
+            </div>
+            <a href="login.html" class="btn-logout" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; padding: 6px 14px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">Sign In / Switch</a>
+        </div>
+    </header>
+
+    <main class="dash-container">
+        <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2>Real-Time Admission Application Tracking</h2>
+                    <p style="color: var(--color-text-muted); font-size: 0.92rem; margin: 4px 0 0 0;">Application Reference ID: <strong style="color: var(--color-primary);">GPS-2026-ADM-089</strong></p>
+                </div>
+                <div>
+                    <span class="badge badge-success" style="font-size: 0.9rem; padding: 6px 14px;">Admission Status: Approved</span>
+                </div>
+            </div>
+            
+            <div class="card-body-padding" style="padding: 24px;">
+                <div class="tracking-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+                    <!-- Left Summary -->
+                    <div class="tracker-sidebar" style="background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+                        <span class="lbl" style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase;">Candidate Details:</span>
+                        <h3 class="status-val-title" style="margin: 8px 0 16px 0; font-size: 1.3rem; color: var(--color-primary-dark);">Aarav Sharma</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--color-text-main);">
+                            <div><strong>Grade Seeking:</strong> Grade XI (Science)</div>
+                            <div><strong>Board:</strong> HP Board (HPBOSE)</div>
+                            <div><strong>Parent:</strong> Ramesh Sharma</div>
+                            <div><strong>Contact:</strong> +91 98160 12345</div>
+                            <div><strong>Submission Date:</strong> 14th October 2026</div>
+                        </div>
+
+                        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--color-border);">
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <a href="fees.html" class="btn btn-accent btn-sm" style="width: 100%; text-align: center;">Proceed to Fee Payment</a>
+                            <a href="admission_form.html" class="btn btn-outline btn-sm" style="width: 100%; text-align: center;">Review Form Submission</a>
+                        </div>
+                    </div>
+
+                    <!-- Steps Timeline -->
+                    <div class="tracker-timeline" style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Step 1: Registered -->
+                        <div class="timeline-node completed" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="node-icon" style="width: 32px; height: 32px; border-radius: 50%; background: #ecfdf5; color: #059669; border: 2px solid #a7f3d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4 style="margin: 0 0 4px 0; color: var(--color-primary-dark);">1. Account Registration Completed</h4>
+                                <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted);">Parent portal credentials configured and verified successfully.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Form Details -->
+                        <div class="timeline-node completed" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="node-icon" style="width: 32px; height: 32px; border-radius: 50%; background: #ecfdf5; color: #059669; border: 2px solid #a7f3d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4 style="margin: 0 0 4px 0; color: var(--color-primary-dark);">2. Admission Application Form Submitted</h4>
+                                <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted);">Personal info, grade selection, and emergency contacts filed.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Document Uploads Verification -->
+                        <div class="timeline-node completed" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="node-icon" style="width: 32px; height: 32px; border-radius: 50%; background: #ecfdf5; color: #059669; border: 2px solid #a7f3d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4 style="margin: 0 0 4px 0; color: var(--color-primary-dark);">3. Document Integrity Validation</h4>
+                                <p style="margin: 0; font-size: 0.88rem; color: #059669; font-weight: 500;">Birth Certificate, Class X Marksheet, and Transfer Certificate verified by Admission Cell.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Final Admission Decision -->
+                        <div class="timeline-node completed" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="node-icon" style="width: 32px; height: 32px; border-radius: 50%; background: #ecfdf5; color: #059669; border: 2px solid #a7f3d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="node-content">
+                                <h4 style="margin: 0 0 4px 0; color: #059669;">4. Admission Formally Approved</h4>
+                                <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted);">Congratulations! Seat allocated for Session 2026-27 under HP Board guidelines. Complete installment 1 fee payment to lock enrollment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
