@@ -1,11 +1,18 @@
 /**
  * GUMMA PUBLIC SCHOOL - MAIN JAVASCRIPT BUNDLE (main.js)
- * Modular interactions: Mobile Drawer, Notice Marquee, Gallery Lightbox,
- * Fee Calculator, FAQ Accordion, Back-to-Top, and Form Validation.
+ * Modular interactions:
+ * - Fully Responsive Mobile Drawers (Public Site & Portal Dashboard)
+ * - Notice Marquee with Desktop Hover & Mobile Touch Pause
+ * - Photo Gallery Lightbox with Touch Gestures & Keyboard Navigation
+ * - Real-Time Dynamic Fee Calculator
+ * - Interactive FAQ & Information Accordions
+ * - Responsive Back-to-Top Floating Button
+ * - Form Validation & Touch-Friendly Password Toggle
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
+    initDashboardNavigation();
     initNoticeMarquee();
     initBackToTop();
     initGalleryLightbox();
@@ -14,10 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initInquiryForms();
     highlightActiveNavLink();
     initPasswordToggle();
+    initResponsiveTables();
 });
 
 /* ==========================================================================
-   1. Mobile Navigation & Accessibility Drawer
+   1. Mobile Navigation & Accessibility Drawer (Public Site)
    ========================================================================== */
 function initNavigation() {
     const toggleBtn = document.querySelector('.nav-toggle');
@@ -25,7 +33,7 @@ function initNavigation() {
     
     if (!toggleBtn || !navMenu) return;
 
-    // Create backdrop if not present
+    // Create shared backdrop if not present
     let backdrop = document.querySelector('.nav-backdrop');
     if (!backdrop) {
         backdrop = document.createElement('div');
@@ -55,7 +63,7 @@ function initNavigation() {
 
     backdrop.addEventListener('click', closeMenu);
 
-    // Close on link click
+    // Close on link click on mobile
     const navLinks = navMenu.querySelectorAll('.nav-link, .btn');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
@@ -72,7 +80,20 @@ function initNavigation() {
         }
     });
 
-    // Close if resized to desktop
+    // Touch swipe right to close drawer
+    let drawerTouchStartX = 0;
+    navMenu.addEventListener('touchstart', (e) => {
+        drawerTouchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    navMenu.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - drawerTouchStartX;
+        if (diffX > 60) {
+            closeMenu();
+        }
+    }, { passive: true });
+
+    // Close if resized to desktop viewport
     window.addEventListener('resize', () => {
         if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
             closeMenu();
@@ -81,36 +102,144 @@ function initNavigation() {
 }
 
 /* ==========================================================================
-   2. Active Navigation Link Detection
+   2. Dashboard & Portal Mobile Navigation Drawer (.dash-header)
    ========================================================================== */
-function highlightActiveNavLink() {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-menu .nav-link');
-    
-    navLinks.forEach(link => {
-        const linkHref = link.getAttribute('href');
-        if (linkHref === currentPath || (currentPath === '' && linkHref === 'index.html')) {
-            link.classList.add('active');
-        } else if (linkHref !== currentPath && linkHref !== 'index.html') {
-            link.classList.remove('active');
+function initDashboardNavigation() {
+    const dashHeader = document.querySelector('.dash-header');
+    if (!dashHeader) return;
+
+    const navLinks = dashHeader.querySelector('.nav-links');
+    if (!navLinks) return;
+
+    // Check if toggle exists or dynamically inject for portal resilience
+    let toggleBtn = dashHeader.querySelector('.dash-nav-toggle');
+    if (!toggleBtn) {
+        toggleBtn = document.createElement('button');
+        toggleBtn.className = 'dash-nav-toggle';
+        toggleBtn.setAttribute('aria-label', 'Toggle dashboard navigation');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        `;
+        const headerRight = dashHeader.querySelector('.header-right') || dashHeader;
+        headerRight.appendChild(toggleBtn);
+    }
+
+    // Shared backdrop
+    let backdrop = document.querySelector('.nav-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'nav-backdrop';
+        document.body.appendChild(backdrop);
+    }
+
+    const openDashMenu = () => {
+        navLinks.classList.add('active');
+        backdrop.classList.add('active');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeDashMenu = () => {
+        navLinks.classList.remove('active');
+        backdrop.classList.remove('active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    };
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = navLinks.classList.contains('active');
+        isOpen ? closeDashMenu() : openDashMenu();
+    });
+
+    backdrop.addEventListener('click', closeDashMenu);
+
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                closeDashMenu();
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            closeDashMenu();
+        }
+    });
+
+    // Touch swipe right to dismiss drawer
+    let dashTouchStartX = 0;
+    navLinks.addEventListener('touchstart', (e) => {
+        dashTouchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    navLinks.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - dashTouchStartX;
+        if (diffX > 60) {
+            closeDashMenu();
+        }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+            closeDashMenu();
         }
     });
 }
 
 /* ==========================================================================
-   3. Back-to-Top Floating Button
+   3. Active Navigation Link Detection
    ========================================================================== */
-function initBackToTop() {
-    const backBtn = document.querySelector('.back-to-top');
-    if (!backBtn) return;
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 350) {
-            backBtn.classList.add('visible');
-        } else {
-            backBtn.classList.remove('visible');
+function highlightActiveNavLink() {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-menu .nav-link, .dash-header .nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (!linkHref) return;
+        const cleanHref = linkHref.split('/').pop();
+        if (cleanHref === currentPath || (currentPath === '' && cleanHref === 'index.html')) {
+            link.classList.add('active');
         }
     });
+}
+
+/* ==========================================================================
+   4. Back-to-Top Floating Button
+   ========================================================================== */
+function initBackToTop() {
+    let backBtn = document.querySelector('.back-to-top');
+    if (!backBtn) {
+        backBtn = document.createElement('button');
+        backBtn.className = 'back-to-top';
+        backBtn.setAttribute('aria-label', 'Scroll to top');
+        backBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        `;
+        document.body.appendChild(backBtn);
+    }
+
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        if (!scrollTimeout) {
+            scrollTimeout = setTimeout(() => {
+                if (window.scrollY > 300) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+                scrollTimeout = null;
+            }, 50);
+        }
+    }, { passive: true });
 
     backBtn.addEventListener('click', () => {
         window.scrollTo({
@@ -121,7 +250,7 @@ function initBackToTop() {
 }
 
 /* ==========================================================================
-   4. Announcement Ticker Hover Pause
+   5. Announcement Ticker Hover & Touch Pause
    ========================================================================== */
 function initNoticeMarquee() {
     const ticker = document.querySelector('.ticker-track');
@@ -134,10 +263,19 @@ function initNoticeMarquee() {
     ticker.addEventListener('mouseleave', () => {
         ticker.style.animationPlayState = 'running';
     });
+
+    // Touch events for mobile screens
+    ticker.addEventListener('touchstart', () => {
+        ticker.style.animationPlayState = 'paused';
+    }, { passive: true });
+
+    ticker.addEventListener('touchend', () => {
+        ticker.style.animationPlayState = 'running';
+    }, { passive: true });
 }
 
 /* ==========================================================================
-   5. Interactive Photo Gallery & Lightbox Viewer
+   6. Interactive Photo Gallery & Lightbox Viewer with Touch Swipe
    ========================================================================== */
 function initGalleryLightbox() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -181,6 +319,7 @@ function initGalleryLightbox() {
 
     function openLightbox(index) {
         const items = visibleItems();
+        if (items.length === 0) return;
         if (index < 0) index = items.length - 1;
         if (index >= items.length) index = 0;
         currentIndex = index;
@@ -192,7 +331,9 @@ function initGalleryLightbox() {
 
         modalImg.src = img.src;
         modalImg.alt = img.alt || title;
-        modalCaption.innerHTML = `<strong>${title}</strong> <span style="opacity:0.8; font-size:0.85em; margin-left:8px;">[${category}]</span>`;
+        if (modalCaption) {
+            modalCaption.innerHTML = `<strong>${title}</strong> <span style="opacity:0.8; font-size:0.85em; margin-left:8px;">[${category}]</span>`;
+        }
 
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -227,10 +368,37 @@ function initGalleryLightbox() {
         if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
         if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
     });
+
+    // Touch Swipe Navigation on Mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    modal.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    modal.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // If horizontal swipe is dominant and above threshold (50px)
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX < 0) {
+                // Swipe left -> Next
+                openLightbox(currentIndex + 1);
+            } else {
+                // Swipe right -> Prev
+                openLightbox(currentIndex - 1);
+            }
+        }
+    }, { passive: true });
 }
 
 /* ==========================================================================
-   6. Transparent Fee Structure Calculator
+   7. Transparent Fee Structure Calculator
    ========================================================================== */
 function initFeeCalculator() {
     const gradeSelect = document.getElementById('calc-grade');
@@ -269,12 +437,12 @@ function initFeeCalculator() {
         activityCheckboxes.forEach(cb => cb.addEventListener('change', calculateTotal));
     }
 
-    // Initial calculation run
+    // Initial run
     calculateTotal();
 }
 
 /* ==========================================================================
-   7. FAQ & Information Accordions
+   8. FAQ & Information Accordions
    ========================================================================== */
 function initAccordions() {
     const headers = document.querySelectorAll('.accordion-header');
@@ -299,7 +467,7 @@ function initAccordions() {
 }
 
 /* ==========================================================================
-   8. Inquiry & Contact Form Submissions
+   9. Inquiry & Contact Form Submissions
    ========================================================================== */
 function initInquiryForms() {
     const forms = document.querySelectorAll('.ajax-inquiry-form');
@@ -311,7 +479,6 @@ function initInquiryForms() {
             const alertBox = form.querySelector('.form-alert');
             const submitBtn = form.querySelector('button[type="submit"]');
 
-            // Visual feedback
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerText = 'Submitting...';
@@ -329,7 +496,6 @@ function initInquiryForms() {
                 }
                 form.reset();
 
-                // Recalculate fee if exists
                 const gradeSelect = document.getElementById('calc-grade');
                 if (gradeSelect) gradeSelect.dispatchEvent(new Event('change'));
             }, 800);
@@ -338,7 +504,7 @@ function initInquiryForms() {
 }
 
 /* ==========================================================================
-   8. Password Visibility Toggle
+   10. Password Visibility Toggle
    ========================================================================== */
 function initPasswordToggle() {
     const toggleBtns = document.querySelectorAll('.password-toggle');
@@ -365,3 +531,24 @@ function initPasswordToggle() {
     });
 }
 
+/* ==========================================================================
+   11. Responsive Tables Smooth Scrolling Cue
+   ========================================================================== */
+function initResponsiveTables() {
+    const tableWrappers = document.querySelectorAll('.table-wrapper, .table-responsive');
+    tableWrappers.forEach(wrapper => {
+        const table = wrapper.querySelector('table');
+        if (!table) return;
+
+        const checkOverflow = () => {
+            if (table.offsetWidth > wrapper.clientWidth) {
+                wrapper.classList.add('has-overflow');
+            } else {
+                wrapper.classList.remove('has-overflow');
+            }
+        };
+
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow, { passive: true });
+    });
+}

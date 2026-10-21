@@ -82,6 +82,10 @@
                 <a href="{{ url_for('students') }}" class="nav-link">Applications</a>
                 <a href="{{ url_for('fees') }}" class="nav-link">Fee Logs</a>
                 {% endif %}
+                <a href="{{ url_for('logout') }}" class="nav-link mobile-only-nav">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="nav-link mobile-only-nav">Sign In</a>
+                <a href="{{ url_for('admissions') }}" class="nav-link mobile-only-nav">Admissions Open</a>
                 {% endif %}
             </nav>
 

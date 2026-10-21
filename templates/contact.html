@@ -73,6 +73,10 @@
 
                 {% if current_username %}
                 <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="nav-link mobile-only-nav">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="nav-link mobile-only-nav">Sign In</a>
+                <a href="{{ url_for('admissions') }}" class="nav-link mobile-only-nav">Admissions Open</a>
                 {% endif %}
             </nav>
 
