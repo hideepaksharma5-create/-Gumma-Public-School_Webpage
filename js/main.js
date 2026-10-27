@@ -46,6 +46,8 @@ function initNavigation() {
         backdrop.classList.add('active');
         toggleBtn.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
+        const closeBtn = navMenu.querySelector('.nav-close-btn');
+        if (closeBtn) closeBtn.focus();
     };
 
     const closeMenu = () => {
@@ -61,13 +63,23 @@ function initNavigation() {
         isOpen ? closeMenu() : openMenu();
     });
 
+    // Close button inside mobile drawer
+    const closeBtn = navMenu.querySelector('.nav-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMenu();
+            toggleBtn.focus();
+        });
+    }
+
     backdrop.addEventListener('click', closeMenu);
 
-    // Close on link click on mobile
+    // Close on link click on mobile/tablet
     const navLinks = navMenu.querySelectorAll('.nav-link, .btn');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 992) {
                 closeMenu();
             }
         });
@@ -77,6 +89,7 @@ function initNavigation() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && navMenu.classList.contains('active')) {
             closeMenu();
+            toggleBtn.focus();
         }
     });
 
@@ -95,7 +108,7 @@ function initNavigation() {
 
     // Close if resized to desktop viewport
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+        if (window.innerWidth > 992 && navMenu.classList.contains('active')) {
             closeMenu();
         }
     });

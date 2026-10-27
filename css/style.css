@@ -287,6 +287,24 @@ ul, ol {
     border-radius: 2px;
 }
 
+/* Mobile Drawer Elements Hidden on Desktop */
+.nav-drawer-header,
+.mobile-drawer-cta-group,
+.nav-chevron,
+.nav-icon {
+    display: none !important;
+}
+
+.nav-links-wrap {
+    display: contents;
+}
+
+.nav-link-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .header-actions {
     display: flex;
     align-items: center;

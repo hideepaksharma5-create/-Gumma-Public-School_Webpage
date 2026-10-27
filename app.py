@@ -1,6 +1,6 @@
-﻿import os
+import os
 import sqlite3
-from flask import Flask, jsonify, render_template, request, redirect, url_for, session, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, session, flash, send_from_directory
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -69,6 +69,18 @@ def inject_user():
         current_username=session.get('user'),
         current_role=session.get('role')
     )
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
+
+@app.route('/.well-known/appspecific/com.chrome.devtools.json')
+def chrome_devtools_json():
+    return jsonify({}), 200
 
 @app.route("/")
 def home():
